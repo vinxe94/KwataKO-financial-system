@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+
+{% block title %}Edit Transaction - Financial Dashboard{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Edit Transaction</h2>
+    <form method="POST" action="{{ url_for('update_transaction', id=transaction.id) }}">
+        <div class="form-group">
+            <label>Date</label>
+            <input type="date" name="date" value="{{ transaction.date.strftime('%Y-%m-%d') }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Type</label>
+            <select name="type" required>
+                <option value="expense" {% if transaction.type == 'expense' %}selected{% endif %}>Expense</option>
+                <option value="income" {% if transaction.type == 'income' %}selected{% endif %}>Income</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Amount</label>
+            <input type="number" name="amount" step="0.01" value="{{ transaction.amount }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Category</label>
+            <select name="category" required>
+                {% for category in categories %}
+                <option value="{{ category }}" {% if transaction.category == category %}selected{% endif %}>
+                    {{ category }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Payment Method</label>
+            <select name="payment_method" required>
+                {% for method in payment_methods %}
+                <option value="{{ method }}" {% if transaction.payment_method == method %}selected{% endif %}>
+                    {{ method }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Description</label>
+            <input type="text" name="description" value="{{ transaction.description }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Notes</label>
+            <textarea name="notes">{{ transaction.notes }}</textarea>
+        </div>
+
+        <button type="submit" class="btn-primary">Update Transaction</button>
+        <a href="{{ url_for('transactions') }}" class="btn-secondary">Cancel</a>
+    </form>
+</div>
+
+<style>
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.btn-secondary {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #6c757d;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+</style>
+{% endblock %}

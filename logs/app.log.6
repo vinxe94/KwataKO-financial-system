@@ -1,0 +1,106 @@
+2025-05-21 00:18:38,144 ERROR: Exception on /budgets [GET] [in C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\app.py", line 371, in budgets
+    return render_template('budgets.html',
+                         active_page='budgets',
+                         budgets=budgets,
+                         categories=categories)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\Administrator\Desktop\financial\templates\budgets.html", line 1, in top-level template code
+    {% extends "layout.html" %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\templates\layout.html", line 52, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\templates\budgets.html", line 26, in block 'content'
+    <button class="btn-edit" onclick="editBudget({{ budget['id'] }})">Edit</button>
+    ^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1121, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1110, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+        endpoint,
+    ...<3 lines>...
+        force_external=_external,
+    )
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\werkzeug\routing\map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'edit_budget' with values ['id']. Did you mean 'add_budget' instead?
+2025-05-21 00:18:48,471 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-21 00:18:48,472 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:271]
+2025-05-21 00:21:31,587 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-21 00:21:31,623 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:271]
+2025-05-21 00:21:40,442 ERROR: Exception on /budgets [GET] [in C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\app.py", line 371, in budgets
+    return render_template('budgets.html',
+                         active_page='budgets',
+                         budgets=budgets,
+                         categories=categories)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\Administrator\Desktop\financial\templates\budgets.html", line 1, in top-level template code
+    {% extends "layout.html" %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\templates\layout.html", line 52, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\templates\budgets.html", line 26, in block 'content'
+    <a href="{{ url_for('edit_budget', id=budget['id']) }}" class="btn-edit">Edit</a>
+    ^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1110, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+        endpoint,
+    ...<3 lines>...
+        force_external=_external,
+    )
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\werkzeug\routing\map.py", line 922, in build
+    rv = self._partial_build(endpoint, values, method, append_unknown)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\werkzeug\routing\map.py", line 801, in _partial_build
+    rv = self._partial_build(
+        endpoint, values, self.default_method, append_unknown
+    )
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\werkzeug\routing\map.py", line 814, in _partial_build
+    build_rv = rule.build(values, append_unknown)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\werkzeug\routing\rules.py", line 850, in build
+    return self._build_unknown(**values)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "<werkzeug routing>", line 1, in <builder:'/edit_budget/<int:id>'>
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\werkzeug\routing\converters.py", line 163, in to_url
+    value_str = str(self.num_convert(value))
+                    ~~~~~~~~~~~~~~~~^^^^^^^
+jinja2.exceptions.UndefinedError: 'dict object' has no attribute 'id'

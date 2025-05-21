@@ -1,0 +1,455 @@
+{% extends "layout.html" %}
+
+{% block title %}Budgets - Financial Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Budget Management</h2>
+    <button class="btn-primary" onclick="showBudgetForm()">Add New Budget</button>
+</div>
+
+<div class="budget-grid">
+    {% for budget in budgets %}
+    <div class="budget-card">
+        <div class="budget-header">
+            <h3 class="{% if budget.progress >= budget.alert_threshold %}alert{% endif %}">{{ budget.category }}</h3>
+            <span class="period">{{ budget.period|title }} Budget</span>
+        </div>
+        <div class="budget-amount">${{ "%.2f"|format(budget.amount) }}</div>
+        <div class="progress-bar {% if budget.progress >= budget.alert_threshold %}alert{% endif %}">
+            <div class="bar" style="width: {{ budget.progress }}%"></div>
+        </div>
+        <div class="budget-stats">
+            <div>Spent: ${{ "%.2f"|format(budget.spent) }}</div>
+            <div>Remaining: ${{ "%.2f"|format(budget.amount - budget.spent) }}</div>
+            <div class="date-range">{{ budget.start_date }} to {{ budget.end_date }}</div>
+        </div>
+        <div class="budget-actions">
+            <a href="{{ url_for('edit_budget', id=budget.id) }}" class="btn-edit">Edit</a>
+            <a href="{{ url_for('delete_budget', id=budget.id) }}" class="btn-delete" onclick="return confirm('Are you sure you want to delete this budget?')">Delete</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Add Budget Modal -->
+<div id="budgetModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeBudgetForm()">&times;</span>
+        <h3>Add New Budget</h3>
+        <div class="modal-body">
+            <form action="{{ url_for('add_budget') }}" method="POST">
+                <div class="form-group">
+                    <label for="category">Budget Category</label>
+                    <select id="category" name="category" required>
+                        <option value="">Choose a spending category</option>
+                        {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                    <small class="form-text text-muted">Select the category you want to budget for</small>
+                </div>
+                <div class="form-group">
+                    <label for="amount">Budget Amount ($)</label>
+                    <input type="number" 
+                           id="amount" 
+                           name="amount" 
+                           step="0.01" 
+                           min="0.01" 
+                           placeholder="Enter amount (e.g. 500.00)"
+                           required>
+                    <small class="form-text text-muted">Enter the maximum amount you want to spend</small>
+                </div>
+                <div class="form-group">
+                    <label for="period">Budget Period</label>
+                    <select id="period" name="period" required>
+                        <option value="monthly">Monthly (Next 30 days)</option>
+                        <option value="quarterly">Quarterly (Next 3 months)</option>
+                        <option value="yearly">Yearly (Until Dec 31)</option>
+                    </select>
+                    <small class="form-text text-muted">Choose how long this budget should last</small>
+                </div>
+                <div class="form-group">
+                    <label for="alert_threshold">Alert Threshold (%)</label>
+                    <input type="number" 
+                           id="alert_threshold" 
+                           name="alert_threshold" 
+                           value="80" 
+                           min="1" 
+                           max="100"
+                           placeholder="Enter percentage (e.g. 80)"
+                           required>
+                    <small class="form-text text-muted">You'll be alerted when spending reaches this percentage of the budget</small>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Add Budget</button>
+                    <button type="button" class="btn-secondary" onclick="closeBudgetForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function showBudgetForm() {
+    document.getElementById('budgetModal').style.display = 'block';
+}
+
+function closeBudgetForm() {
+    document.getElementById('budgetModal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    var modal = document.getElementById('budgetModal');
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+
+document.querySelectorAll('.form-group input, .form-group select').forEach(input => {
+    input.addEventListener('input', function() {
+        if (this.value) {
+            this.classList.add('has-value');
+        } else {
+            this.classList.remove('has-value');
+        }
+    });
+});
+</script>
+
+<style type="text/css">
+/* Modal base styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    animation: fadeIn 0.3s ease;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+/* Modal content container */
+.modal-content {
+    background-color: #ffffff;
+    position: relative;
+    margin: 40px auto;
+    padding: 0;
+    border: 1px solid #e0e0e0;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    animation: slideIn 0.3s ease;
+    max-height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Modal header */
+.modal h3 {
+    margin: 0;
+    padding: 20px 30px;
+    color: #2c3e50;
+    font-size: 1.5em;
+    border-bottom: 2px solid #e9ecef;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    border-radius: 8px 8px 0 0;
+    z-index: 1;
+}
+
+/* Modal body - scrollable content */
+.modal-body {
+    padding: 30px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* Form group styles */
+.form-group {
+    margin-bottom: 24px;
+    background: #ffffff;
+    padding: 16px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+/* Input field styles */
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+    margin-bottom: 8px;
+    color: #2c3e50;
+    font-weight: 500;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Remove background images for required fields */
+.form-group input:required,
+.form-group select:required {
+    background-image: none !important;
+    padding-right: 16px !important;
+}
+
+.form-group input:required:valid,
+.form-group select:required:valid {
+    background-image: none !important;
+}
+
+/* Style number inputs */
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Focus styles */
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #2196F3;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+    outline: none;
+    background-color: #ffffff;
+}
+
+/* Placeholder styles */
+.form-group input::placeholder {
+    color: #999;
+    opacity: 1;
+}
+
+/* Select dropdown arrow */
+select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px !important;
+}
+
+/* Add visual indicator for input state */
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #2196F3;
+    background-color: #ffffff;
+}
+
+.form-group input.has-value,
+.form-group select.has-value {
+    background-color: #ffffff;
+    border-color: #4CAF50;
+}
+
+/* Form labels */
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1.1em;
+}
+
+/* Help text */
+.form-text {
+    color: #666;
+    font-size: 0.9em;
+    margin-top: 8px;
+    display: block;
+    line-height: 1.4;
+}
+
+/* Form actions - sticky footer */
+.form-actions {
+    position: sticky;
+    bottom: 0;
+    background: #f8f9fa;
+    padding: 16px 30px;
+    margin: 0 -30px -30px -30px;
+    border-top: 1px solid #e9ecef;
+    border-radius: 0 0 8px 8px;
+    text-align: right;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+    z-index: 1;
+}
+
+/* Button styles */
+.form-actions button {
+    padding: 12px 24px;
+    font-size: 1.1em;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #2196F3, #1976D2);
+    color: white;
+    border: none;
+    box-shadow: 0 2px 4px rgba(33, 150, 243, 0.2);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #1976D2, #1565C0);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+}
+
+.btn-secondary {
+    background: #e9ecef;
+    color: #495057;
+    border: 1px solid #ced4da;
+}
+
+.btn-secondary:hover {
+    background: #dee2e6;
+}
+
+/* Close button */
+.close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    padding: 5px 10px;
+    z-index: 2;
+}
+
+.close:hover {
+    color: #2196F3;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-height: 700px) {
+    .modal-content {
+        margin: 20px auto;
+    }
+    
+    .form-group {
+        margin-bottom: 16px;
+        padding: 12px;
+    }
+    
+    .modal-body {
+        padding: 20px;
+    }
+}
+
+/* Budget card styles */
+.budget-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.budget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.budget-header h3 {
+    margin: 0;
+    color: #2c3e50;
+    transition: color 0.3s ease;
+}
+
+.budget-header h3.alert {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+.period {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.budget-amount {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #2196F3;
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    height: 8px;
+    background: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-bar.alert .bar {
+    background: #ff9800;
+}
+
+.bar {
+    height: 100%;
+    background: #4CAF50;
+    transition: width 0.3s ease;
+}
+
+.budget-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+}
+
+.date-range {
+    grid-column: 1 / -1;
+    color: #666;
+    font-size: 0.85em;
+}
+
+.budget-actions {
+    display: flex;
+    gap: 10px;
+}
+</style>
+{% endblock %}

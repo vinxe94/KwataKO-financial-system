@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block title %}Settings - Financial Dashboard{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <h2>Account Settings</h2>
+    
+    <div class="settings-section">
+        <h3>Profile</h3>
+        <p>Username: {{ user.username }}</p>
+        <p>Email: {{ user.email }}</p>
+    </div>
+
+    <div class="settings-section">
+        <h3>Preferences</h3>
+        <form method="POST" action="{{ url_for('update_settings') }}">
+            <div class="form-group">
+                <label>Currency</label>
+                <select name="currency">
+                    {% for currency in currencies %}
+                    <option value="{{ currency }}">{{ currency }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <button type="submit" class="btn-primary">Save Changes</button>
+        </form>
+    </div>
+
+    <div class="settings-section">
+        <h3>Account Actions</h3>
+        <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+    </div>
+</div>
+
+<style>
+.settings-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.settings-section {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-logout {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+}
+</style>
+{% endblock %}

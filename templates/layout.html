@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Financial Dashboard{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="brand">
+                <i class="fas fa-wallet"></i>
+                <h2>KwartaKO</h2>
+            </div>
+            <nav>
+                <a href="{{ url_for('overview') }}" class="{{ 'active' if active_page == 'overview' }}">
+                    <i class="fas fa-home"></i> Overview
+                </a>
+                <a href="{{ url_for('transactions') }}" class="{{ 'active' if active_page == 'transactions' }}">
+                    <i class="fas fa-exchange-alt"></i> Transactions
+                </a>
+                <a href="{{ url_for('budgets') }}" class="{{ 'active' if active_page == 'budgets' }}">
+                    <i class="fas fa-chart-pie"></i> Budgets
+                </a>
+                <a href="{{ url_for('savings') }}" class="{{ 'active' if active_page == 'savings' }}">
+                    <i class="fas fa-piggy-bank"></i> Savings
+                </a>
+                <a href="{{ url_for('analytics') }}" class="{{ 'active' if active_page == 'analytics' }}">
+                    <i class="fas fa-chart-line"></i> Analytics
+                </a>
+                <a href="{{ url_for('settings') }}" class="{{ 'active' if active_page == 'settings' }}">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+        <div class="main-content">
+            <div class="top-bar">
+                <div class="search-container">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search transactions...">
+                    </div>
+                    <div id="searchResults" class="search-results"></div>
+                </div>
+                <div class="user-menu">
+                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </div>
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        let searchTimeout;
+
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            const query = this.value.trim();
+            
+            if (query.length < 2) {
+                searchResults.style.display = 'none';
+                return;
+            }
+
+            searchTimeout = setTimeout(() => {
+                fetch(`/search?q=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.length > 0) {
+                            searchResults.innerHTML = data.map(item => `
+                                <div class="search-result-item ${item.type}">
+                                    <div class="search-result-date">${item.date}</div>
+                                    <div class="search-result-details">
+                                        <div class="search-result-description">${item.description}</div>
+                                        <div class="search-result-category">${item.category}</div>
+                                    </div>
+                                    <div class="search-result-amount">$${item.amount.toFixed(2)}</div>
+                                </div>
+                            `).join('');
+                            searchResults.style.display = 'block';
+                        } else {
+                            searchResults.innerHTML = '<div class="no-results">No results found</div>';
+                            searchResults.style.display = 'block';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Search error:', error);
+                        searchResults.style.display = 'none';
+                    });
+            }, 300);
+        });
+
+        // Close search results when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                searchResults.style.display = 'none';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

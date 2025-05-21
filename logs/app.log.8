@@ -1,0 +1,121 @@
+2025-05-20 06:21:11,078 ERROR: Exception on /transactions [GET] [in C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\app.py", line 358, in transactions
+    return render_template('transactions.html',
+                         active_page='transactions',
+                         transactions=transactions,
+                         categories=categories,
+                         payment_methods=payment_methods)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\Administrator\Desktop\financial\templates\transactions.html", line 1, in top-level template code
+    {% extends "layout.html" %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\templates\layout.html", line 52, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\templates\transactions.html", line 51, in block 'content'
+    <a href="{{ url_for('delete_transaction', id=transaction.id) }}" class="btn-delete" onclick="return confirm('Delete this transaction?')">Delete</a>
+    ^^^^^
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1121, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1110, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+        endpoint,
+    ...<3 lines>...
+        force_external=_external,
+    )
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\werkzeug\routing\map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'delete_transaction' with values ['id']. Did you mean 'update_transaction' instead?
+2025-05-20 06:21:11,293 ERROR: Exception on /transactions [GET] [in C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\app.py", line 358, in transactions
+    return render_template('transactions.html',
+                         active_page='transactions',
+                         transactions=transactions,
+                         categories=categories,
+                         payment_methods=payment_methods)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\Administrator\Desktop\financial\templates\transactions.html", line 1, in top-level template code
+    {% extends "layout.html" %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\templates\layout.html", line 52, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\templates\transactions.html", line 51, in block 'content'
+    <a href="{{ url_for('delete_transaction', id=transaction.id) }}" class="btn-delete" onclick="return confirm('Delete this transaction?')">Delete</a>
+    ^^^^^
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1121, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1110, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+        endpoint,
+    ...<3 lines>...
+        force_external=_external,
+    )
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\werkzeug\routing\map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'delete_transaction' with values ['id']. Did you mean 'update_transaction' instead?
+2025-05-20 06:21:20,298 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-20 06:21:20,298 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:271]
+2025-05-20 06:22:11,096 INFO: Generated 1 insights for user 2 [in C:\Users\Administrator\Desktop\financial\app.py:419]
+2025-05-20 06:22:30,169 INFO: User Jeody logged in successfully [in C:\Users\Administrator\Desktop\financial\app.py:306]
+2025-05-20 06:22:36,847 INFO: Generated 1 insights for user 2 [in C:\Users\Administrator\Desktop\financial\app.py:419]
+2025-05-20 06:25:06,728 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-20 06:25:06,729 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:271]
+2025-05-20 06:25:16,127 INFO: Generated 2 insights for user 2 [in C:\Users\Administrator\Desktop\financial\app.py:419]
+2025-05-20 06:25:52,970 INFO: User Vince logged in successfully [in C:\Users\Administrator\Desktop\financial\app.py:306]
+2025-05-20 06:25:58,940 INFO: Generated 1 insights for user 3 [in C:\Users\Administrator\Desktop\financial\app.py:419]
+2025-05-20 06:28:16,961 INFO: Generated 2 insights for user 3 [in C:\Users\Administrator\Desktop\financial\app.py:419]
+2025-05-20 06:28:38,871 INFO: User Vince logged in successfully [in C:\Users\Administrator\Desktop\financial\app.py:306]
+2025-05-20 06:29:04,522 INFO: Generated 2 insights for user 3 [in C:\Users\Administrator\Desktop\financial\app.py:419]
+2025-05-20 06:29:16,431 INFO: User Vince logged in successfully [in C:\Users\Administrator\Desktop\financial\app.py:306]
+2025-05-20 06:30:18,453 INFO: Generated 2 insights for user 3 [in C:\Users\Administrator\Desktop\financial\app.py:419]
+2025-05-20 23:58:17,033 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-20 23:58:17,034 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:271]
+2025-05-20 23:58:44,928 INFO: User Jeody logged in successfully [in C:\Users\Administrator\Desktop\financial\app.py:306]
+2025-05-20 23:58:54,548 INFO: Generated 2 insights for user 2 [in C:\Users\Administrator\Desktop\financial\app.py:419]
+2025-05-20 23:59:31,467 INFO: Generated 2 insights for user 2 [in C:\Users\Administrator\Desktop\financial\app.py:419]
+2025-05-20 23:59:58,425 INFO: Generated 2 insights for user 2 [in C:\Users\Administrator\Desktop\financial\app.py:419]
+2025-05-21 00:00:05,285 INFO: Generated 2 insights for user 2 [in C:\Users\Administrator\Desktop\financial\app.py:419]
+2025-05-21 00:06:41,770 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-21 00:06:41,771 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:290]
+2025-05-21 00:09:57,980 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-21 00:09:57,985 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:271]
+2025-05-21 00:11:47,228 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]

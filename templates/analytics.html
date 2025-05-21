@@ -1,0 +1,187 @@
+{% extends "layout.html" %}
+
+{% block title %}Analytics - Financial Dashboard{% endblock %}
+
+{% block content %}
+<div class="analytics-grid">
+    <!-- Financial Insights Widget -->
+    <div class="widget insights-widget">
+        <h3>Smart Financial Insights</h3>
+        {% if insights %}
+        <div class="insights-container">
+            {% for insight in insights %}
+            <div class="insight-card {{ insight.type }}">
+                <i class="fas fa-{% if insight.type == 'danger' %}exclamation-circle
+                               {% elif insight.type == 'warning' %}exclamation-triangle
+                               {% elif insight.type == 'success' %}check-circle
+                               {% else %}info-circle{% endif %}"></i>
+                <div class="insight-content">
+                    <p>{{ insight.message }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="no-data">
+            Add 5+ transactions in a week to view insights
+            {% if debug_info %}
+            <br>
+            <small>(Current: {{ debug_info.transaction_count }} transactions over {{ debug_info.days_of_data }} days)</small>
+            {% endif %}
+        </p>
+        {% endif %}
+    </div>
+
+    <!-- 4-Day Spending Trend -->
+    <div class="widget">
+        <h3>4-Day Spending Trend</h3>
+        <canvas id="fourDayTrendChart"></canvas>
+    </div>
+    
+    <!-- Category Chart -->
+    <div class="widget">
+        <h3>Spending by Category</h3>
+        <canvas id="categoryChart"></canvas>
+        <script>
+            new Chart(document.getElementById('categoryChart'), {
+                type: 'pie',
+                data: {
+                    labels: {{ category_totals.keys()|list|tojson }},
+                    datasets: [{
+                        data: {{ category_totals.values()|list|tojson }},
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                    }]
+                }
+            });
+        </script>
+    </div>
+    
+    <!-- Hourly Spending Pattern -->
+    <div class="widget">
+        <h3>Spending Pattern by Hour</h3>
+        <canvas id="hourlyChart"></canvas>
+        <script>
+            new Chart(document.getElementById('hourlyChart'), {
+                type: 'line',
+                data: {
+                    labels: {{ hourly_pattern.keys()|list|tojson }},
+                    datasets: [{
+                        label: 'Average Spending',
+                        data: {{ hourly_pattern.values()|list|tojson }},
+                        borderColor: '#4BC0C0',
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Hour of Day'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Average Amount'
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 4-Day Spending Trend
+    new Chart(document.getElementById('fourDayTrendChart'), {
+        type: 'line',
+        data: {
+            labels: {{ daily_totals|map(attribute='date')|list|tojson }},
+            datasets: [{
+                label: 'Daily Spending',
+                data: {{ daily_totals|map(attribute='amount')|list|tojson }},
+                borderColor: '#2196F3',
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+});
+</script>
+
+<style>
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.widget {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.widget h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.insights-widget {
+    grid-column: span 3;
+}
+
+.insights-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.insight-card {
+    display: flex;
+    align-items: flex-start;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.insight-content {
+    margin-left: 1rem;
+    flex: 1;
+}
+
+.no-data {
+    text-align: center;
+    color: #666;
+    padding: 2rem;
+}
+
+.insight-card.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.insight-card.warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.insight-card.danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+</style>
+{% endblock %}

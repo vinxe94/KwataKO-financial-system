@@ -1,0 +1,128 @@
+2025-05-21 08:45:44,332 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-21 08:45:44,343 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:272]
+2025-05-21 08:48:04,791 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-21 08:48:04,792 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:272]
+2025-05-21 08:55:17,665 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-21 08:55:17,666 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:280]
+2025-05-21 08:55:49,584 INFO: Generated 5 insights for user 2 [in C:\Users\Administrator\Desktop\financial\app.py:516]
+2025-05-21 08:57:47,404 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-21 08:57:47,406 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:280]
+2025-05-21 09:00:56,899 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-21 09:00:56,900 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:280]
+2025-05-21 09:04:56,521 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-21 09:04:56,522 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:280]
+2025-05-21 09:10:22,319 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-21 09:10:22,320 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:280]
+2025-05-21 09:14:29,851 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-21 09:14:29,852 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:280]
+2025-05-21 09:14:36,154 ERROR: Exception on /budgets [GET] [in C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\app.py", line 398, in budgets
+    return render_template('budgets.html',
+                         active_page='budgets',
+                         budgets=budgets,
+                         categories=categories)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\Administrator\Desktop\financial\templates\budgets.html", line 1, in top-level template code
+    {% extends "layout.html" %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\templates\layout.html", line 55, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\templates\budgets.html", line 20, in block 'content'
+    {% for label in budget.labels.split(',') if label %}
+    ^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'dict object' has no attribute 'labels'
+2025-05-21 09:14:51,326 ERROR: Exception on /budgets [GET] [in C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\app.py", line 398, in budgets
+    return render_template('budgets.html',
+                         active_page='budgets',
+                         budgets=budgets,
+                         categories=categories)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\Administrator\Desktop\financial\templates\budgets.html", line 1, in top-level template code
+    {% extends "layout.html" %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\templates\layout.html", line 55, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\templates\budgets.html", line 20, in block 'content'
+    <div class="bar" style="width: {{ budget.progress }}%"></div>
+    ^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'dict object' has no attribute 'labels'
+2025-05-21 09:14:52,528 ERROR: Exception on /budgets [GET] [in C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\app.py", line 398, in budgets
+    return render_template('budgets.html',
+                         active_page='budgets',
+                         budgets=budgets,
+                         categories=categories)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\Administrator\Desktop\financial\templates\budgets.html", line 1, in top-level template code
+    {% extends "layout.html" %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\templates\layout.html", line 55, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\templates\budgets.html", line 20, in block 'content'
+    <div class="bar" style="width: {{ budget.progress }}%"></div>
+    ^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'dict object' has no attribute 'labels'

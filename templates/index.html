@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Financial Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <nav>
+                <a href="#overview">Overview</a>
+                <a href="#transactions">Transactions</a>
+                <a href="#budgets">Budgets</a>
+                <a href="#goals">Savings Goals</a>
+                <a href="#analytics">Analytics</a>
+                <a href="#settings">Settings</a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="widget-grid">
+                <!-- Balance Widget -->
+                <div class="widget">
+                    <h3>Current Balance</h3>
+                    <div class="balance">
+                        ${{ "%.2f"|format(total_balance) }}
+                    </div>
+                </div>
+
+                <!-- Monthly Summary Widget -->
+                <div class="widget">
+                    <h3>Monthly Summary</h3>
+                    <canvas id="monthlyChart"></canvas>
+                </div>
+
+                <!-- Budget Status Widget -->
+                <div class="widget">
+                    <h3>Budget Status</h3>
+                    <div class="budget-progress">
+                        {% for budget in budgets %}
+                        <div class="budget-item">
+                            <div class="category">{{ budget['category'] }}</div>
+                            <div class="progress-bar">
+                                <div class="bar" style="width: {{ budget['progress'] }}%"></div>
+                            </div>
+                            <div class="amount">${{ "%.2f"|format(budget['spent']) }} / ${{ "%.2f"|format(budget['amount']) }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Recent Transactions Widget -->
+                <div class="widget">
+                    <h3>Recent Transactions</h3>
+                    <div class="transaction-list">
+                        {% for transaction in recent_transactions %}
+                        <div class="transaction-item {{ transaction.type }}">
+                            <div class="date">{{ transaction.date.strftime('%Y-%m-%d') }}</div>
+                            <div class="description">{{ transaction.description }}</div>
+                            <div class="amount">${{ "%.2f"|format(transaction.amount) }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

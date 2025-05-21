@@ -1,0 +1,130 @@
+{% extends "layout.html" %}
+
+{% block title %}Edit Budget - Financial Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Edit Budget</h2>
+</div>
+
+<div class="form-container">
+    <form method="POST" action="{{ url_for('edit_budget', id=budget.id) }}">
+        <div class="form-group">
+            <label for="category">Category</label>
+            <input type="text" id="category" value="{{ budget.category }}" disabled>
+            <small class="form-text text-muted">Category cannot be changed</small>
+        </div>
+        <div class="form-group">
+            <label for="amount">Budget Amount ($)</label>
+            <input type="number" 
+                   id="amount" 
+                   name="amount" 
+                   value="{{ budget.amount }}" 
+                   step="0.01" 
+                   min="0.01"
+                   required>
+            <small class="form-text text-muted">Enter the maximum amount you want to spend</small>
+        </div>
+        <div class="form-group">
+            <label for="period">Budget Period</label>
+            <select id="period" name="period" required>
+                {% for period_option in periods %}
+                <option value="{{ period_option }}" {% if budget.period == period_option %}selected{% endif %}>
+                    {{ period_option|title }}
+                </option>
+                {% endfor %}
+            </select>
+            <small class="form-text text-muted">Choose how long this budget should last</small>
+        </div>
+        <div class="form-group">
+            <label for="alert_threshold">Alert Threshold (%)</label>
+            <input type="number" 
+                   id="alert_threshold" 
+                   name="alert_threshold" 
+                   value="{{ budget.alert_threshold }}" 
+                   min="1" 
+                   max="100"
+                   required>
+            <small class="form-text text-muted">You'll be alerted when spending reaches this percentage of the budget</small>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">Update Budget</button>
+            <a href="{{ url_for('budgets') }}" class="btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<style>
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.form-group input:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+.form-text {
+    font-size: 0.875em;
+    color: #6c757d;
+    margin-top: 5px;
+}
+
+.form-actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.btn-primary,
+.btn-secondary {
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+</style>
+{% endblock %} 

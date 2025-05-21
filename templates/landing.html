@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to KwartaKO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="landing-page">
+        <nav class="landing-nav">
+            <div class="brand">
+                <i class="fas fa-wallet"></i>
+                <h1>KwartaKO</h1>
+            </div>
+            <div class="nav-links">
+                <a href="{{ url_for('login') }}" class="btn-primary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </a>
+                <a href="{{ url_for('register') }}" class="btn-secondary">
+                    <i class="fas fa-user-plus"></i>
+                    Register
+                </a>
+            </div>
+        </nav>
+
+        <div class="hero-section">
+            <h1>Take Control of Your Finances</h1>
+            <p>Smart expense tracking with AI-powered insights</p>
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Spending Analysis</h3>
+                    <p>Predict future expenses</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-bullseye"></i>
+                    <h3>Budget Goals</h3>
+                    <p>Stay on track with smart budgeting</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-brain"></i>
+                    <h3>AI Insights</h3>
+                    <p>4-day spending predictions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

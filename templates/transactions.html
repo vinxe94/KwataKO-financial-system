@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+
+{% block title %}Transactions - Financial Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Transactions</h2>
+    <a href="{{ url_for('add_transaction') }}" class="btn-primary">Add Transaction</a>
+</div>
+
+<div class="filters">
+    <select id="category-filter">
+        <option value="">All Categories</option>
+        {% for category in categories %}
+        <option value="{{ category }}">{{ category }}</option>
+        {% endfor %}
+    </select>
+    <select id="type-filter">
+        <option value="">All Types</option>
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+    </select>
+    <input type="date" id="date-filter">
+</div>
+
+<div class="transaction-table">
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr class="{{ transaction.type }}" 
+                data-category="{{ transaction.category }}"
+                data-type="{{ transaction.type }}"
+                data-date="{{ transaction.date.strftime('%Y-%m-%d') }}">
+                <td>{{ transaction.date.strftime('%Y-%m-%d') }}</td>
+                <td>{{ transaction.description }}</td>
+                <td>{{ transaction.category }}</td>
+                <td>${{ "%.2f"|format(transaction.amount) }}</td>
+                <td>{{ transaction.type|title }}</td>
+                <td>
+                    <a href="{{ url_for('edit_transaction', id=transaction.id) }}" class="btn-edit">Edit</a>
+                    <a href="{{ url_for('delete_transaction', id=transaction.id) }}" class="btn-delete" onclick="return confirm('Delete this transaction?')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const categoryFilter = document.getElementById('category-filter');
+    const typeFilter = document.getElementById('type-filter');
+    const dateFilter = document.getElementById('date-filter');
+    const transactions = document.querySelectorAll('.transaction-row');
+
+    function filterTransactions() {
+        const category = categoryFilter.value;
+        const type = typeFilter.value;
+        const date = dateFilter.value;
+
+        transactions.forEach(row => {
+            const rowCategory = row.dataset.category;
+            const rowType = row.dataset.type;
+            const rowDate = row.dataset.date;
+
+            const matchesCategory = !category || rowCategory === category;
+            const matchesType = !type || rowType === type;
+            const matchesDate = !date || rowDate === date;
+
+            row.style.display = matchesCategory && matchesType && matchesDate ? '' : 'none';
+        });
+    }
+
+    categoryFilter.addEventListener('change', filterTransactions);
+    typeFilter.addEventListener('change', filterTransactions);
+    dateFilter.addEventListener('change', filterTransactions);
+});
+</script>
+{% endblock %}

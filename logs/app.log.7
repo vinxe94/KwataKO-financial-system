@@ -1,0 +1,87 @@
+2025-05-21 00:11:47,229 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:271]
+2025-05-21 00:13:40,184 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-21 00:13:40,185 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:271]
+2025-05-21 00:17:44,734 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-21 00:17:44,735 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:271]
+2025-05-21 00:17:52,300 ERROR: Exception on /savings [GET] [in C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\app.py", line 411, in savings
+    goals = repo.get_savings_goals(session['user_id'])
+  File "C:\Users\Administrator\Desktop\financial\app.py", line 182, in get_savings_goals
+    cur.execute("SELECT * FROM savings_goals WHERE user_id = ? AND status = 'active'")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: Incorrect number of bindings supplied. The current statement uses 1, and there are 0 supplied.
+2025-05-21 00:17:57,892 ERROR: Exception on /budgets [GET] [in C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\app.py", line 371, in budgets
+    return render_template('budgets.html',
+                         active_page='budgets',
+                         budgets=budgets,
+                         categories=categories)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\Administrator\Desktop\financial\templates\budgets.html", line 1, in top-level template code
+    {% extends "layout.html" %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\templates\layout.html", line 52, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\templates\budgets.html", line 26, in block 'content'
+    <a href="{{ url_for('edit_budget', id=budget['id']) }}" class="btn btn-warning">Edit</a>
+    ^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1121, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1110, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+        endpoint,
+    ...<3 lines>...
+        force_external=_external,
+    )
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\werkzeug\routing\map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'edit_budget' with values ['id']. Did you mean 'add_budget' instead?
+2025-05-21 00:18:01,914 INFO: Generated 2 insights for user 2 [in C:\Users\Administrator\Desktop\financial\app.py:522]
+2025-05-21 00:18:34,478 ERROR: Exception on /savings [GET] [in C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial\app.py", line 411, in savings
+    goals = repo.get_savings_goals()  # This should also accept user_id
+            ~~~~~~~~~~~~~~~~~~~~~~^^~~~~~~~~~~~~~~~~~~
+  File "C:\Users\Administrator\Desktop\financial\app.py", line 182, in get_savings_goals
+    cur.execute("SELECT * FROM savings_goals WHERE status = 'active'")
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: Incorrect number of bindings supplied. The current statement uses 1, and there are 0 supplied.
