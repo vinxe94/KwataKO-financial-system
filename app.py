@@ -11,6 +11,9 @@ from logging.handlers import RotatingFileHandler
 from init_db import init_db
 from functools import wraps
 from models.insights import InsightsGenerator
+from routes.admin import admin_bp
+import re
+from flask_login import LoginManager, current_user
 
 # Setup logging
 def setup_logging(app):
@@ -36,10 +39,43 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+# Admin required decorator
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session or not session.get('is_admin'):
+            app.logger.warning(f'Unauthorized admin access attempt to {request.endpoint}')
+            flash('Admin access required.', 'warning')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
 # Initialize Flask app
 app = Flask(__name__)
 app.config.from_object(Config)
 app.config['DEBUG'] = False  # Disable debug mode by default
+
+# Initialize Flask-Login
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+@login_manager.user_loader
+def load_user(user_id):
+    try:
+        with sqlite3.connect(Config.DATABASE_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM users WHERE id = ?", (user_id,))
+            user_data = cur.fetchone()
+            if user_data:
+                return User.from_db_row(dict(user_data))
+    except Exception as e:
+        app.logger.error(f"Error loading user: {e}")
+    return None
+
+# Register blueprints
+app.register_blueprint(admin_bp)
 
 class TransactionRepository:
     def __init__(self, db_path):
@@ -262,6 +298,54 @@ class TransactionRepository:
             """, (user_id,))
             return {row['hour']: float(row['avg_amount']) for row in cur.fetchall()}
 
+    def get_time_based_summary(self, user_id, start_date, end_date):
+        with self.get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+                SELECT 
+                    SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END) as income,
+                    SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END) as expenses,
+                    COUNT(CASE WHEN type = 'income' THEN 1 END) as income_count,
+                    COUNT(CASE WHEN type = 'expense' THEN 1 END) as expense_count,
+                    SUM(CASE WHEN type = 'income' THEN amount ELSE -amount END) as savings
+                FROM transactions
+                WHERE user_id = ? AND date BETWEEN ? AND ?
+            """, (user_id, start_date, end_date))
+            result = dict(cur.fetchone())
+            
+            # Get category breakdown
+            cur.execute("""
+                SELECT category, type, SUM(amount) as total
+                FROM transactions
+                WHERE user_id = ? AND date BETWEEN ? AND ?
+                GROUP BY category, type
+                ORDER BY total DESC
+            """, (user_id, start_date, end_date))
+            categories = [dict(row) for row in cur.fetchall()]
+            
+            result['categories'] = categories
+            return result
+
+    def get_weekly_summary(self, user_id):
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=7)
+        return self.get_time_based_summary(user_id, start_date, end_date)
+
+    def get_monthly_summary(self, user_id):
+        end_date = datetime.now()
+        start_date = end_date.replace(day=1)
+        return self.get_time_based_summary(user_id, start_date, end_date)
+
+    def get_quarterly_summary(self, user_id):
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=90)
+        return self.get_time_based_summary(user_id, start_date, end_date)
+
+    def get_yearly_summary(self, user_id):
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=365)  # Get last 365 days
+        return self.get_time_based_summary(user_id, start_date, end_date)
+
 # Ensure instance and logs folders exist
 try:
     os.makedirs(app.instance_path, exist_ok=True)
@@ -296,8 +380,7 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        
-        app.logger.debug(f"Login attempt for username: {username}")
+        login_type = request.form.get('login_type', 'user')
         
         if not username or not password:
             flash('Please enter both username and password', 'error')
@@ -305,14 +388,22 @@ def login():
         
         try:
             user = repo.get_user_by_username(username)
-            app.logger.debug(f"Found user: {user is not None}")
             
             if user and user.check_password(password):
+                if login_type == 'admin' and not user.is_admin:
+                    flash('Invalid admin credentials', 'error')
+                    return render_template('login.html')
+                
                 session.clear()
                 session['user_id'] = user.id
                 session['username'] = user.username
+                session['is_admin'] = user.is_admin
                 session.permanent = True
-                app.logger.info(f'User {user.username} logged in successfully')
+                
+                app.logger.info(f'User {user.username} logged in successfully as {login_type}')
+                
+                if user.is_admin and login_type == 'admin':
+                    return redirect(url_for('admin_dashboard'))
                 return redirect(url_for('overview'))
             else:
                 app.logger.warning(f'Failed login attempt for username: {username}')
@@ -322,6 +413,34 @@ def login():
             flash('An error occurred during login', 'error')
     
     return render_template('login.html')
+
+@app.route('/admin/dashboard')
+@admin_required
+def admin_dashboard():
+    try:
+        # Get all users and their balances
+        with repo.get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+                SELECT u.id, u.username, u.email, 
+                       COALESCE(SUM(CASE WHEN t.type = 'income' THEN t.amount 
+                                        WHEN t.type = 'expense' THEN -t.amount 
+                                        ELSE 0 END), 0) as balance
+                FROM users u
+                LEFT JOIN transactions t ON u.id = t.user_id
+                WHERE u.is_admin = 0
+                GROUP BY u.id, u.username, u.email
+                ORDER BY u.username
+            """)
+            users = [dict(row) for row in cur.fetchall()]
+            
+        return render_template('admin/dashboard.html',
+                             active_page='admin_dashboard',
+                             users=users)
+    except Exception as e:
+        app.logger.error(f'Admin dashboard error: {str(e)}')
+        flash('Error loading admin dashboard', 'error')
+        return redirect(url_for('login'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -338,18 +457,14 @@ def register():
 @login_required
 def overview():
     try:
-        transactions = repo.get_recent_transactions(session['user_id'], 30)
+        # Get time-based summaries
+        weekly_summary = repo.get_weekly_summary(session['user_id'])
         monthly_summary = repo.get_monthly_summary(session['user_id'])
+        quarterly_summary = repo.get_quarterly_summary(session['user_id'])
+        yearly_summary = repo.get_yearly_summary(session['user_id'])
         
-        # Get current month's data
-        current_month = datetime.now().strftime('%Y-%m')
-        current_month_data = next((item for item in monthly_summary if item['month'] == current_month), {
-            'month': current_month,
-            'income': 0,
-            'expenses': 0
-        })
-        
-        # Generate insights
+        # Get recent transactions and insights
+        transactions = repo.get_recent_transactions(session['user_id'], 5)
         total_balance = repo.get_total_balance(session['user_id'])
         budgets = repo.get_budget_status(session['user_id'])
         insight_generator = InsightsGenerator(transactions, budgets, total_balance)
@@ -357,15 +472,17 @@ def overview():
         
         return render_template('overview.html',
                              active_page='overview',
-                             transactions=transactions[:5],
+                             transactions=transactions,
                              total_balance=total_balance,
+                             weekly_summary=weekly_summary,
                              monthly_summary=monthly_summary,
-                             current_month=current_month_data,
+                             quarterly_summary=quarterly_summary,
+                             yearly_summary=yearly_summary,
                              insights=insights)
     except Exception as e:
         app.logger.error(f'Error in overview page: {str(e)}')
         flash('An error occurred while loading the overview page.', 'error')
-        session.clear()  # Clear session if there's an error
+        session.clear()
         return redirect(url_for('login'))
 
 @app.route('/logout')
@@ -883,6 +1000,129 @@ def search():
         app.logger.error(f'Search error: {str(e)}')
         return jsonify([])
 
+@app.route('/setup_admin', methods=['GET', 'POST'])
+def setup_admin():
+    try:
+        # Check if admin already exists
+        with repo.get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM users WHERE is_admin = 1")
+            if cur.fetchone():
+                flash('Admin already exists', 'info')
+                return redirect(url_for('login'))
+        
+        if request.method == 'POST':
+            username = request.form.get('username')
+            password = request.form.get('password')
+            email = request.form.get('email')
+            
+            if not username or not password or not email:
+                flash('Please fill in all fields', 'error')
+                return render_template('setup_admin.html')
+            
+            # Create admin user
+            with repo.get_connection() as conn:
+                cur = conn.cursor()
+                # Create the user with admin privileges
+                user = User(username=username, email=email, password=password, is_admin=True)
+                cur.execute("""
+                    INSERT INTO users (username, email, password_hash, is_admin)
+                    VALUES (?, ?, ?, 1)
+                """, (user.username, user.email, user.password_hash))
+                conn.commit()
+                flash('Admin user created successfully', 'success')
+                return redirect(url_for('login'))
+        
+        return render_template('setup_admin.html')
+    except Exception as e:
+        app.logger.error(f'Error setting up admin: {str(e)}')
+        flash('Error setting up admin user', 'error')
+        return redirect(url_for('login'))
+
+@app.route('/check_admin')
+def check_admin():
+    try:
+        with repo.get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT username, email FROM users WHERE is_admin = 1")
+            admin = cur.fetchone()
+            if admin:
+                return f"Admin account exists with username: {admin['username']}"
+            else:
+                return "No admin account exists yet. Please create one at /setup_admin"
+    except Exception as e:
+        return "Error checking admin status"
+
+@app.route('/admin/change_credentials', methods=['GET', 'POST'])
+@admin_required
+def change_admin_credentials():
+    try:
+        if request.method == 'POST':
+            current_password = request.form.get('current_password')
+            new_username = request.form.get('new_username')
+            new_password = request.form.get('new_password')
+            confirm_password = request.form.get('confirm_password')
+            
+            # Get current admin user
+            with repo.get_connection() as conn:
+                cur = conn.cursor()
+                cur.execute("SELECT * FROM users WHERE id = ?", (session['user_id'],))
+                user = User.from_db_row(dict(cur.fetchone()))
+                
+                # Verify current password
+                if not user.check_password(current_password):
+                    track_login_attempt(user.username, False)
+                    flash('Current password is incorrect', 'error')
+                    return redirect(url_for('change_admin_credentials'))
+                
+                # Verify new password if provided
+                if new_password:
+                    if new_password != confirm_password:
+                        flash('New passwords do not match', 'error')
+                        return redirect(url_for('change_admin_credentials'))
+                    
+                    # Check password strength
+                    is_strong, message = is_strong_password(new_password)
+                    if not is_strong:
+                        flash(message, 'error')
+                        return redirect(url_for('change_admin_credentials'))
+                
+                # Update credentials
+                if new_username:
+                    # Check if username is already taken
+                    cur.execute("SELECT id FROM users WHERE username = ? AND id != ?", 
+                              (new_username, session['user_id']))
+                    if cur.fetchone():
+                        flash('Username already taken', 'error')
+                        return redirect(url_for('change_admin_credentials'))
+                    
+                    user.username = new_username
+                    session['username'] = new_username
+                
+                if new_password:
+                    user.set_password(new_password)
+                
+                # Update in database
+                cur.execute("""
+                    UPDATE users 
+                    SET username = ?, password_hash = ?
+                    WHERE id = ?
+                """, (user.username, user.password_hash, user.id))
+                conn.commit()
+                
+                # Log successful credential change
+                app.logger.info(f"Admin credentials updated for user {user.username}")
+                track_login_attempt(user.username, True)
+                
+                flash('Admin credentials updated successfully', 'success')
+                return redirect(url_for('admin_dashboard'))
+        
+        return render_template('admin/change_credentials.html', active_page='change_credentials')
+    except Exception as e:
+        app.logger.error(f'Error changing admin credentials: {str(e)}')
+        flash('Error updating credentials', 'error')
+        return redirect(url_for('admin_dashboard'))
+
 # Ensure proper shutdown handling
 def shutdown_server():
     try:
@@ -898,6 +1138,55 @@ def shutdown():
     shutdown_server()
     return 'Server shutting down...'
 
+# Add these functions at the top with other utility functions
+def is_strong_password(password):
+    """Check if password meets security requirements"""
+    if len(password) < 8:
+        return False, "Password must be at least 8 characters long"
+    if not re.search(r"[A-Z]", password):
+        return False, "Password must contain at least one uppercase letter"
+    if not re.search(r"[a-z]", password):
+        return False, "Password must contain at least one lowercase letter"
+    if not re.search(r"\d", password):
+        return False, "Password must contain at least one number"
+    if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
+        return False, "Password must contain at least one special character"
+    return True, "Password is strong"
+
+def track_login_attempt(username, success):
+    """Track login attempts to prevent brute force"""
+    try:
+        with repo.get_connection() as conn:
+            cur = conn.cursor()
+            # Create login_attempts table if it doesn't exist
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS login_attempts (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    username TEXT NOT NULL,
+                    attempt_time TIMESTAMP NOT NULL,
+                    success BOOLEAN NOT NULL
+                )
+            """)
+            # Record the attempt
+            cur.execute("""
+                INSERT INTO login_attempts (username, attempt_time, success)
+                VALUES (?, ?, ?)
+            """, (username, datetime.now(), success))
+            conn.commit()
+            
+            # Check for too many failed attempts
+            cur.execute("""
+                SELECT COUNT(*) FROM login_attempts
+                WHERE username = ? 
+                AND attempt_time > ?
+                AND success = 0
+            """, (username, datetime.now() - timedelta(minutes=15)))
+            
+            failed_attempts = cur.fetchone()[0]
+            return failed_attempts < 5
+    except Exception as e:
+        app.logger.error(f"Error tracking login attempt: {e}")
+        return True
 
 # Update main block with better error handling
 if __name__ == '__main__':

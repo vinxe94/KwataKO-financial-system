@@ -15,6 +15,7 @@ def create_tables(cur):
         username TEXT UNIQUE NOT NULL,
         email TEXT UNIQUE NOT NULL,
         password_hash TEXT NOT NULL,
+        is_admin BOOLEAN DEFAULT 0,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )""")
 
@@ -65,8 +66,8 @@ def insert_sample_data(cur):
     from werkzeug.security import generate_password_hash
     admin_password_hash = generate_password_hash('admin123')
     cur.execute("""
-        INSERT INTO users (username, email, password_hash)
-        VALUES (?, ?, ?)
+        INSERT INTO users (username, email, password_hash, is_admin)
+        VALUES (?, ?, ?, 1)
     """, ('admin', 'admin@example.com', admin_password_hash))
     admin_id = cur.lastrowid
 

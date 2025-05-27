@@ -14,6 +14,14 @@
                 <h1>KwartaKO</h1>
             </div>
             <div class="nav-links">
+                <a href="{{ url_for('admin.change_credentials') }}" class="btn-secondary">
+                    <i class="fas fa-key"></i>
+                    Change Admin Credentials
+                </a>
+                <a href="{{ url_for('login', type='admin') }}" class="btn-secondary">
+                    <i class="fas fa-user-shield"></i>
+                    Admin
+                </a>
                 <a href="{{ url_for('login') }}" class="btn-primary">
                     <i class="fas fa-sign-in-alt"></i>
                     Login

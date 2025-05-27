@@ -19,11 +19,11 @@
             <input type="number" 
                    id="amount" 
                    name="amount" 
-                   value="{{ budget.amount }}" 
+                   value="{{ "{:.2f}".format(budget.amount) }}" 
                    step="0.01" 
                    min="0.01"
                    required>
-            <small class="form-text text-muted">Enter the maximum amount you want to spend</small>
+            <small class="form-text text-muted">Current amount: ${{ "{:,.2f}".format(budget.amount) }}</small>
         </div>
         <div class="form-group">
             <label for="period">Budget Period</label>

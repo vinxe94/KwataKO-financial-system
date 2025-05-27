@@ -1,28 +1,64 @@
-2025-05-21 10:55:15,454 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:280]
-2025-05-21 10:57:37,447 INFO: Generated 9 insights for user 2 [in C:\Users\Administrator\Desktop\financial\app.py:516]
-2025-05-21 11:00:08,065 WARNING: Failed login attempt for username: Jeody [in C:\Users\Administrator\Desktop\financial\app.py:318]
-2025-05-21 11:00:20,041 WARNING: Failed login attempt for username: Jeody [in C:\Users\Administrator\Desktop\financial\app.py:318]
-2025-05-21 11:00:32,230 WARNING: Failed login attempt for username: Jeody [in C:\Users\Administrator\Desktop\financial\app.py:318]
-2025-05-21 11:00:39,649 WARNING: Failed login attempt for username: Jeody [in C:\Users\Administrator\Desktop\financial\app.py:318]
-2025-05-21 11:01:23,112 INFO: User Darling logged in successfully [in C:\Users\Administrator\Desktop\financial\app.py:315]
-2025-05-21 11:02:04,114 INFO: Generated 1 insights for user 4 [in C:\Users\Administrator\Desktop\financial\app.py:516]
-2025-05-21 11:10:39,295 INFO: Generated 6 insights for user 4 [in C:\Users\Administrator\Desktop\financial\app.py:516]
-2025-05-21 11:10:59,240 INFO: Generated 6 insights for user 4 [in C:\Users\Administrator\Desktop\financial\app.py:516]
-2025-05-21 11:11:13,099 INFO: Generated 6 insights for user 4 [in C:\Users\Administrator\Desktop\financial\app.py:516]
-2025-05-21 11:29:00,636 INFO: Generated 6 insights for user 4 [in C:\Users\Administrator\Desktop\financial\app.py:516]
-2025-05-21 11:29:01,069 INFO: Generated 6 insights for user 4 [in C:\Users\Administrator\Desktop\financial\app.py:516]
-2025-05-21 11:29:32,171 INFO: Generated 6 insights for user 4 [in C:\Users\Administrator\Desktop\financial\app.py:516]
-2025-05-21 11:29:33,953 INFO: Generated 6 insights for user 4 [in C:\Users\Administrator\Desktop\financial\app.py:516]
-2025-05-21 11:30:28,406 INFO: Generated 8 insights for user 4 [in C:\Users\Administrator\Desktop\financial\app.py:516]
-2025-05-21 11:30:44,060 INFO: Generated 8 insights for user 4 [in C:\Users\Administrator\Desktop\financial\app.py:516]
-2025-05-21 11:31:08,113 INFO: Generated 8 insights for user 4 [in C:\Users\Administrator\Desktop\financial\app.py:516]
-2025-05-21 13:37:40,426 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
-2025-05-21 13:37:40,427 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:280]
-2025-05-21 14:25:20,884 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
-2025-05-21 14:25:20,888 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:280]
-2025-05-21 14:29:53,625 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
-2025-05-21 14:29:53,626 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:280]
-2025-05-21 14:31:04,675 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
-2025-05-21 14:31:04,677 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:280]
-2025-05-21 14:38:59,286 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
-2025-05-21 14:38:59,287 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:280]
+2025-05-27 11:28:13,184 ERROR: Exception on /admin/dashboard [GET] [in C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\routes\admin.py", line 54, in dashboard
+    return render_template('admin/dashboard.html',
+                         active_page='admin_dashboard',
+                         users=users)
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\templates\admin\dashboard.html", line 20, in top-level template code
+    <a href="{{ url_for('admin.manage_users') }}" class="{{ 'active' if active_page == 'manage_users' }}">
+    ^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py", line 1121, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py", line 1110, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+        endpoint,
+    ...<3 lines>...
+        force_external=_external,
+    )
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\werkzeug\routing\map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'admin.manage_users'. Did you mean 'admin.add_user' instead?
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\routes\admin.py", line 32, in decorated_function
+    return f(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\routes\admin.py", line 58, in dashboard
+    app.logger.error(f'Admin dashboard error: {str(e)}')
+    ^^^
+NameError: name 'app' is not defined
+2025-05-27 11:30:49,687 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:29]
+2025-05-27 11:30:49,689 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:364]
+2025-05-27 11:31:22,413 INFO: User VINCE logged in successfully as admin [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:403]
+2025-05-27 11:36:10,360 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:29]
+2025-05-27 11:36:10,362 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:364]
+2025-05-27 11:36:30,621 WARNING: Failed login attempt for username: VINCE [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:409]
+2025-05-27 11:36:43,869 INFO: User VINCE logged in successfully as admin [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:403]
+2025-05-27 11:39:49,946 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:29]
+2025-05-27 11:39:49,947 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:364]
+2025-05-27 11:40:11,398 INFO: User VINCE logged in successfully as admin [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:403]
+2025-05-27 11:40:30,534 ERROR: Error adding user: Failed to create user: table users has no column named active [in C:\Users\Administrator\Desktop\financial - Copy (2)\routes\admin.py:233]
+2025-05-27 13:34:07,003 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:29]
+2025-05-27 13:34:07,006 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:364]
+2025-05-27 13:34:36,791 WARNING: Failed login attempt for username: VINCE [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:409]
+2025-05-27 13:34:51,054 INFO: User VINCE logged in successfully as admin [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:403]

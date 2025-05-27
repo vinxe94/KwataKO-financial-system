@@ -15,13 +15,13 @@
             <h3 class="{% if budget.progress >= budget.alert_threshold %}alert{% endif %}">{{ budget.category }}</h3>
             <span class="period">{{ budget.period|title }} Budget</span>
         </div>
-        <div class="budget-amount">${{ "%.2f"|format(budget.amount) }}</div>
+        <div class="budget-amount">${{ "{:,.2f}".format(budget.amount) }}</div>
         <div class="progress-bar {% if budget.progress >= budget.alert_threshold %}alert{% endif %}">
             <div class="bar" style="width: {{ budget.progress }}%"></div>
         </div>
         <div class="budget-stats">
-            <div>Spent: ${{ "%.2f"|format(budget.spent) }}</div>
-            <div>Remaining: ${{ "%.2f"|format(budget.amount - budget.spent) }}</div>
+            <div>Spent: ${{ "{:,.2f}".format(budget.spent) }}</div>
+            <div>Remaining: ${{ "{:,.2f}".format(budget.amount - budget.spent) }}</div>
             <div class="date-range">{{ budget.start_date }} to {{ budget.end_date }}</div>
         </div>
         <div class="budget-actions">

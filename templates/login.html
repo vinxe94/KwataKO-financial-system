@@ -4,6 +4,7 @@
     <title>Login - KwartaKO</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="auth-page">
     <div class="auth-container">
@@ -11,6 +12,12 @@
             <div class="auth-header">
                 <i class="fas fa-wallet"></i>
                 <h1>KwartaKO</h1>
+                {% if request.args.get('type') == 'admin' %}
+                <div class="admin-badge">
+                    <i class="fas fa-user-shield"></i>
+                    Admin Login
+                </div>
+                {% endif %}
             </div>
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
@@ -19,7 +26,7 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <form method="POST" action="{{ url_for('login') }}">
+            <form method="POST" action="{{ url_for('login', type=request.args.get('type')) }}">
                 <div class="form-group">
                     <label>Username</label>
                     <input type="text" name="username" required>
@@ -28,11 +35,20 @@
                     <label>Password</label>
                     <input type="password" name="password" required>
                 </div>
-                <button type="submit" class="btn-primary">Login</button>
+                <input type="hidden" name="login_type" value="{{ request.args.get('type', 'user') }}">
+                <button type="submit" class="btn-primary">
+                    {% if request.args.get('type') == 'admin' %}
+                    <i class="fas fa-user-shield"></i> Admin Login
+                    {% else %}
+                    <i class="fas fa-sign-in-alt"></i> Login
+                    {% endif %}
+                </button>
             </form>
+            {% if not request.args.get('type') == 'admin' %}
             <div class="auth-links">
                 <p>Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>
             </div>
+            {% endif %}
         </div>
     </div>
 </body>

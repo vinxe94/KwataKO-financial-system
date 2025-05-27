@@ -45,7 +45,7 @@
                             <div class="progress-bar">
                                 <div class="bar" style="width: {{ budget['progress'] }}%"></div>
                             </div>
-                            <div class="amount">${{ "%.2f"|format(budget['spent']) }} / ${{ "%.2f"|format(budget['amount']) }}</div>
+                            <div class="amount">${{ "{:,.2f}".format(budget['spent']) }} / ${{ "{:,.2f}".format(budget['amount']) }}</div>
                         </div>
                         {% endfor %}
                     </div>

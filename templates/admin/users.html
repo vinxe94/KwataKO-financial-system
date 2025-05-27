@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-container">
+    <h2>User Management</h2>
+    
+    <!-- Add New User Form -->
+    <div class="admin-section">
+        <h3>Add New User</h3>
+        <form method="POST" action="{{ url_for('admin.add_user') }}" class="user-form">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" required class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" required class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" required class="form-control">
+            </div>
+            <div class="form-check">
+                <input type="checkbox" name="is_admin" class="form-check-input">
+                <label class="form-check-label">Administrator</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Add User</button>
+        </form>
+    </div>
+
+    <!-- User List -->
+    <div class="admin-section">
+        <h3>Registered Users</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Balance</th>
+                    <th>Status</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>${{ "%.2f"|format(user.balance|default(0)) }}</td>
+                    <td>{{ user.status }}</td>
+                    <td>{{ "Admin" if user.is_admin else "User" }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('admin.toggle_user_status', user_id=user.id) }}" style="display:inline">
+                            <button type="submit" class="btn btn-{{ 'warning' if user.status == 'Active' else 'success' }}">
+                                {{ "Deactivate" if user.status == 'Active' else "Activate" }}
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+.admin-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.admin-section {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.user-form {
+    max-width: 500px;
+    margin: 20px 0;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+</style>
+{% endblock %}

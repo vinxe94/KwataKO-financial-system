@@ -23,37 +23,52 @@
     <input type="date" id="date-filter">
 </div>
 
-<div class="transaction-table">
-    <table>
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>Amount</th>
-                <th>Type</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for transaction in transactions %}
-            <tr class="{{ transaction.type }}" 
+<div class="transaction-list">
+    <div class="transactions-group income">
+        <h3>Income Transactions</h3>
+        {% for transaction in transactions %}
+            {% if transaction.type == 'income' %}
+            <div class="transaction-item income" 
                 data-category="{{ transaction.category }}"
                 data-type="{{ transaction.type }}"
                 data-date="{{ transaction.date.strftime('%Y-%m-%d') }}">
-                <td>{{ transaction.date.strftime('%Y-%m-%d') }}</td>
-                <td>{{ transaction.description }}</td>
-                <td>{{ transaction.category }}</td>
-                <td>${{ "%.2f"|format(transaction.amount) }}</td>
-                <td>{{ transaction.type|title }}</td>
-                <td>
+                <div class="date">{{ transaction.date.strftime('%Y-%m-%d') }}</div>
+                <div class="description">
+                    <div>{{ transaction.description }}</div>
+                    <small class="category">{{ transaction.category }}</small>
+                </div>
+                <div class="amount">${{ "{:,.2f}".format(transaction.amount) }}</div>
+                <div class="actions">
                     <a href="{{ url_for('edit_transaction', id=transaction.id) }}" class="btn-edit">Edit</a>
                     <a href="{{ url_for('delete_transaction', id=transaction.id) }}" class="btn-delete" onclick="return confirm('Delete this transaction?')">Delete</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="transactions-group expense">
+        <h3>Expense Transactions</h3>
+        {% for transaction in transactions %}
+            {% if transaction.type == 'expense' %}
+            <div class="transaction-item expense"
+                data-category="{{ transaction.category }}"
+                data-type="{{ transaction.type }}"
+                data-date="{{ transaction.date.strftime('%Y-%m-%d') }}">
+                <div class="date">{{ transaction.date.strftime('%Y-%m-%d') }}</div>
+                <div class="description">
+                    <div>{{ transaction.description }}</div>
+                    <small class="category">{{ transaction.category }}</small>
+                </div>
+                <div class="amount">${{ "{:,.2f}".format(transaction.amount) }}</div>
+                <div class="actions">
+                    <a href="{{ url_for('edit_transaction', id=transaction.id) }}" class="btn-edit">Edit</a>
+                    <a href="{{ url_for('delete_transaction', id=transaction.id) }}" class="btn-delete" onclick="return confirm('Delete this transaction?')">Delete</a>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
 </div>
 
 <script>
@@ -61,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const categoryFilter = document.getElementById('category-filter');
     const typeFilter = document.getElementById('type-filter');
     const dateFilter = document.getElementById('date-filter');
-    const transactions = document.querySelectorAll('.transaction-row');
+    const transactions = document.querySelectorAll('.transaction-item');
 
     function filterTransactions() {
         const category = categoryFilter.value;
@@ -73,11 +88,22 @@ document.addEventListener('DOMContentLoaded', function() {
             const rowType = row.dataset.type;
             const rowDate = row.dataset.date;
 
-            const matchesCategory = !category || rowCategory === category;
-            const matchesType = !type || rowType === type;
-            const matchesDate = !date || rowDate === date;
+            const categoryMatch = !category || rowCategory === category;
+            const typeMatch = !type || rowType === type;
+            const dateMatch = !date || rowDate === date;
 
-            row.style.display = matchesCategory && matchesType && matchesDate ? '' : 'none';
+            if (categoryMatch && typeMatch && dateMatch) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        // Update group visibility
+        document.querySelectorAll('.transactions-group').forEach(group => {
+            const hasVisibleTransactions = Array.from(group.querySelectorAll('.transaction-item'))
+                .some(item => item.style.display !== 'none');
+            group.style.display = hasVisibleTransactions ? '' : 'none';
         });
     }
 
@@ -86,4 +112,32 @@ document.addEventListener('DOMContentLoaded', function() {
     dateFilter.addEventListener('change', filterTransactions);
 });
 </script>
+
+<style>
+.transaction-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: 1rem;
+}
+
+.transaction-item .category {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+}
+
+.transaction-item .actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.transaction-item .date {
+    white-space: nowrap;
+    color: var(--text-secondary);
+}
+
+.transaction-item .description {
+    min-width: 0;
+}
+</style>
 {% endblock %}

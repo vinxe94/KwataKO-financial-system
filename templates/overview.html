@@ -8,30 +8,99 @@
     <div class="widget">
         <h3>Current Balance</h3>
         <div class="balance">
-            ${{ "%.2f"|format(total_balance) }}
+            ${{ "{:,.2f}".format(total_balance) }}
         </div>
     </div>
 
-    <!-- Monthly Summary Widget -->
-    <div class="widget">
-        <h3>Monthly Summary</h3>
-        <div class="monthly-stats">
-            <div class="stat-item income">
-                <span class="label">Income</span>
-                <span class="value">${{ "%.2f"|format(current_month.income) }}</span>
+    <!-- Time-Based Analytics -->
+    <div class="widget time-analytics">
+        <h3>Time-Based Analytics</h3>
+        <div class="time-periods">
+            <div class="time-period weekly active" data-period="weekly">
+                <span>Weekly</span>
             </div>
-            <div class="stat-item expenses">
-                <span class="label">Expenses</span>
-                <span class="value">${{ "%.2f"|format(current_month.expenses) }}</span>
+            <div class="time-period monthly" data-period="monthly">
+                <span>Monthly</span>
             </div>
-            <div class="stat-item net">
-                <span class="label">Net</span>
-                <span class="value {% if current_month.income - current_month.expenses >= 0 %}positive{% else %}negative{% endif %}">
-                    ${{ "%.2f"|format(current_month.income - current_month.expenses) }}
-                </span>
+            <div class="time-period quarterly" data-period="quarterly">
+                <span>Quarterly</span>
+            </div>
+            <div class="time-period yearly" data-period="yearly">
+                <span>Yearly</span>
             </div>
         </div>
-        <canvas id="monthlyChart"></canvas>
+
+        <div class="time-content weekly-content active">
+            <div class="summary-stats">
+                <div class="stat">
+                    <span class="label">Income</span>
+                    <span class="value income">${{ "{:,.2f}".format(weekly_summary.income or 0) }}</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Expenses</span>
+                    <span class="value expense">${{ "{:,.2f}".format(weekly_summary.expenses or 0) }}</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Savings</span>
+                    <span class="value savings">${{ "{:,.2f}".format(weekly_summary.savings or 0) }}</span>
+                </div>
+            </div>
+            <canvas id="weeklyChart"></canvas>
+        </div>
+
+        <div class="time-content monthly-content">
+            <div class="summary-stats">
+                <div class="stat">
+                    <span class="label">Income</span>
+                    <span class="value income">${{ "{:,.2f}".format(monthly_summary.income or 0) }}</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Expenses</span>
+                    <span class="value expense">${{ "{:,.2f}".format(monthly_summary.expenses or 0) }}</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Savings</span>
+                    <span class="value savings">${{ "{:,.2f}".format(monthly_summary.savings or 0) }}</span>
+                </div>
+            </div>
+            <canvas id="monthlyChart"></canvas>
+        </div>
+
+        <div class="time-content quarterly-content">
+            <div class="summary-stats">
+                <div class="stat">
+                    <span class="label">Income</span>
+                    <span class="value income">${{ "{:,.2f}".format(quarterly_summary.income or 0) }}</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Expenses</span>
+                    <span class="value expense">${{ "{:,.2f}".format(quarterly_summary.expenses or 0) }}</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Savings</span>
+                    <span class="value savings">${{ "{:,.2f}".format(quarterly_summary.savings or 0) }}</span>
+                </div>
+            </div>
+            <canvas id="quarterlyChart"></canvas>
+        </div>
+
+        <div class="time-content yearly-content">
+            <div class="summary-stats">
+                <div class="stat">
+                    <span class="label">Income</span>
+                    <span class="value income">${{ "{:,.2f}".format(yearly_summary.income or 0) }}</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Expenses</span>
+                    <span class="value expense">${{ "{:,.2f}".format(yearly_summary.expenses or 0) }}</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Savings</span>
+                    <span class="value savings">${{ "{:,.2f}".format(yearly_summary.savings or 0) }}</span>
+                </div>
+            </div>
+            <canvas id="yearlyChart"></canvas>
+        </div>
     </div>
 
     <!-- Financial Insights Widget -->
@@ -65,7 +134,7 @@
             <div class="transaction-item {{ transaction.type }}">
                 <div class="date">{{ transaction.date.strftime('%Y-%m-%d') }}</div>
                 <div class="description">{{ transaction.description }}</div>
-                <div class="amount">${{ "%.2f"|format(transaction.amount) }}</div>
+                <div class="amount">${{ "{:,.2f}".format(transaction.amount) }}</div>
             </div>
             {% endfor %}
         </div>
@@ -74,52 +143,92 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Monthly Summary Chart
-    const monthlyData = {{ monthly_summary|tojson }};
-    const labels = monthlyData.map(item => item.month);
-    const incomeData = monthlyData.map(item => item.income);
-    const expenseData = monthlyData.map(item => item.expenses);
+    // Time period switching
+    const timePeriods = document.querySelectorAll('.time-period');
+    const timeContents = document.querySelectorAll('.time-content');
 
-    new Chart(document.getElementById('monthlyChart'), {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [
-                {
-                    label: 'Income',
-                    data: incomeData,
-                    backgroundColor: '#4CAF50',
-                    borderColor: '#4CAF50',
-                    borderWidth: 1
-                },
-                {
-                    label: 'Expenses',
-                    data: expenseData,
-                    backgroundColor: '#F44336',
-                    borderColor: '#F44336',
-                    borderWidth: 1
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Amount ($)'
+    timePeriods.forEach(period => {
+        period.addEventListener('click', () => {
+            const targetPeriod = period.dataset.period;
+            
+            // Update active states
+            timePeriods.forEach(p => p.classList.remove('active'));
+            timeContents.forEach(c => c.classList.remove('active'));
+            
+            period.classList.add('active');
+            document.querySelector(`.${targetPeriod}-content`).classList.add('active');
+        });
+    });
+
+    // Chart creation function
+    function createChart(canvasId, data) {
+        const categories = data.categories || [];
+        const incomeData = {};
+        const expenseData = {};
+        
+        categories.forEach(cat => {
+            if (cat.type === 'income') {
+                incomeData[cat.category] = cat.total;
+            } else {
+                expenseData[cat.category] = cat.total;
+            }
+        });
+
+        return new Chart(document.getElementById(canvasId), {
+            type: 'bar',
+            data: {
+                labels: [...new Set(categories.map(c => c.category))],
+                datasets: [
+                    {
+                        label: 'Income',
+                        data: Object.values(incomeData),
+                        backgroundColor: '#4CAF50',
+                        borderColor: '#4CAF50',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Expenses',
+                        data: Object.values(expenseData),
+                        backgroundColor: '#F44336',
+                        borderColor: '#F44336',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: value => '$' + value.toLocaleString()
+                        }
                     }
                 },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Month'
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: context => {
+                                const value = context.raw;
+                                return `${context.dataset.label}: $${value.toLocaleString()}`;
+                            }
+                        }
                     }
                 }
             }
-        }
-    });
+        });
+    }
+
+    // Create charts for each time period
+    const weeklyData = {{ weekly_summary|tojson }};
+    const monthlyData = {{ monthly_summary|tojson }};
+    const quarterlyData = {{ quarterly_summary|tojson }};
+    const yearlyData = {{ yearly_summary|tojson }};
+
+    createChart('weeklyChart', weeklyData);
+    createChart('monthlyChart', monthlyData);
+    createChart('quarterlyChart', quarterlyData);
+    createChart('yearlyChart', yearlyData);
 });
 </script>
 
@@ -143,53 +252,89 @@ document.addEventListener('DOMContentLoaded', function() {
     color: #333;
 }
 
-.monthly-stats {
+.time-analytics {
+    grid-column: span 2;
+}
+
+.time-periods {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.time-period {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.time-period:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.time-period.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.time-content {
+    display: none;
+}
+
+.time-content.active {
+    display: block;
+}
+
+.summary-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin-bottom: 20px;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
-.stat-item {
+.stat {
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
     text-align: center;
-    padding: 10px;
-    border-radius: 4px;
 }
 
-.stat-item .label {
+.stat .label {
     display: block;
-    font-size: 0.9em;
-    color: #666;
-    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
 }
 
-.stat-item .value {
-    font-size: 1.2em;
+.stat .value {
+    display: block;
+    font-size: 1.2rem;
     font-weight: bold;
 }
 
-.stat-item.income .value {
-    color: #4CAF50;
+.stat .value.income {
+    color: var(--success-color);
 }
 
-.stat-item.expenses .value {
-    color: #F44336;
+.stat .value.expense {
+    color: var(--danger-color);
 }
 
-.stat-item.net .value.positive {
-    color: #4CAF50;
+.stat .value.savings {
+    color: var(--primary-color);
 }
 
-.stat-item.net .value.negative {
-    color: #F44336;
-}
-
-.balance {
-    font-size: 2em;
-    font-weight: bold;
-    color: #2196F3;
-    text-align: center;
-    margin: 10px 0;
+canvas {
+    margin-top: 1rem;
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
 }
 
 .insights-list {

@@ -7,6 +7,9 @@ class InsightsGenerator:
         self.budget_status = budget_status
         self.total_balance = total_balance
 
+    def format_currency(self, amount):
+        return "${:,.2f}".format(amount)
+
     def generate_insights(self):
         insights = []
         
@@ -30,24 +33,24 @@ class InsightsGenerator:
                 avg_income = highest_income[1] / income_counts[highest_income[0]]
                 insights.append({
                     'type': 'success',
-                    'message': f'Your main source of income is {highest_income[0]} (${highest_income[1]:.2f}, averaging ${avg_income:.2f} per payment)'
+                    'message': f'Your main source of income is {highest_income[0]} ({self.format_currency(highest_income[1])}, averaging {self.format_currency(avg_income)} per payment)'
                 })
         
         # Balance insights
         if self.total_balance < 0:
             insights.append({
                 'type': 'danger',
-                'message': f'Your balance is negative (${self.total_balance:.2f}). Consider reducing expenses or increasing income.'
+                'message': f'Your balance is negative ({self.format_currency(self.total_balance)}). Consider reducing expenses or increasing income.'
             })
         elif self.total_balance < total_expenses * 0.5:
             insights.append({
                 'type': 'warning',
-                'message': f'Your balance (${self.total_balance:.2f}) is low compared to your expenses. Aim to maintain at least 3 months of expenses in savings.'
+                'message': f'Your balance ({self.format_currency(self.total_balance)}) is low compared to your expenses. Aim to maintain at least 3 months of expenses in savings.'
             })
         elif self.total_balance > total_expenses * 3:
             insights.append({
                 'type': 'success',
-                'message': f'Great job! You have a healthy emergency fund of ${self.total_balance:.2f}.'
+                'message': f'Great job! You have a healthy emergency fund of {self.format_currency(self.total_balance)}.'
             })
 
         # Expense insights
@@ -65,7 +68,7 @@ class InsightsGenerator:
                 avg_expense = highest_expense[1] / expense_counts[highest_expense[0]]
                 insights.append({
                     'type': 'info',
-                    'message': f'Your highest expense category is {highest_expense[0]} (${highest_expense[1]:.2f}, avg ${avg_expense:.2f} per transaction)'
+                    'message': f'Your highest expense category is {highest_expense[0]} ({self.format_currency(highest_expense[1])}, avg {self.format_currency(avg_expense)} per transaction)'
                 })
 
                 # Identify significant expense categories
@@ -102,17 +105,17 @@ class InsightsGenerator:
                 if budget['progress'] >= 100:
                     insights.append({
                         'type': 'danger',
-                        'message': f'You have exceeded your {budget["category"]} budget by ${budget["spent"] - budget["amount"]:.2f}.'
+                        'message': f'You have exceeded your {budget["category"]} budget by {self.format_currency(budget["spent"] - budget["amount"])}.'
                     })
                 elif budget['progress'] >= 90:
                     insights.append({
                         'type': 'warning',
-                        'message': f'You are close to exceeding your {budget["category"]} budget (${budget["amount"] - budget["spent"]:.2f} remaining).'
+                        'message': f'You are close to exceeding your {budget["category"]} budget ({self.format_currency(budget["amount"] - budget["spent"])} remaining).'
                     })
                 elif budget['progress'] <= 30 and budget['amount'] > 0:
                     insights.append({
                         'type': 'success',
-                        'message': f'You are well within your {budget["category"]} budget (${budget["amount"] - budget["spent"]:.2f} remaining).'
+                        'message': f'You are well within your {budget["category"]} budget ({self.format_currency(budget["amount"] - budget["spent"])} remaining).'
                     })
 
         # Recent spending insights
@@ -123,7 +126,7 @@ class InsightsGenerator:
                 if avg_daily > total_expenses / 30:  # If daily average is higher than monthly average
                     insights.append({
                         'type': 'warning',
-                        'message': f'Your daily spending (${avg_daily:.2f}) is higher than your monthly average. Consider reducing daily expenses.'
+                        'message': f'Your daily spending ({self.format_currency(avg_daily)}) is higher than your monthly average. Consider reducing daily expenses.'
                     })
 
         # If no insights generated, add a basic one

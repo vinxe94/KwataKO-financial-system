@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard - KwartaKO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="brand">
+                <i class="fas fa-shield-alt"></i>
+                <h2>Admin Panel</h2>
+            </div>
+            <nav>
+                <a href="{{ url_for('admin_dashboard') }}" class="{{ 'active' if active_page == 'admin_dashboard' }}">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="{{ url_for('admin.manage_users') }}" class="{{ 'active' if active_page == 'manage_users' }}">
+                    <i class="fas fa-users"></i> Manage Users
+                </a>
+                <a href="{{ url_for('admin.change_credentials') }}" class="{{ 'active' if active_page == 'change_credentials' }}">
+                    <i class="fas fa-key"></i> Change Credentials
+                </a>
+                <a href="{{ url_for('landing') }}">
+                    <i class="fas fa-home"></i> Back to Site
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+        <div class="main-content">
+            <div class="top-bar">
+                <h1>Admin Dashboard</h1>
+                <div class="user-menu">
+                    <span class="admin-user">
+                        <i class="fas fa-user-shield"></i>
+                        {{ session.get('username', 'Admin') }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <div class="stat-info">
+                        <h3>Total Users</h3>
+                        <p class="stat-value">{{ users|length }}</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-wallet"></i>
+                    <div class="stat-info">
+                        <h3>Total Balance</h3>
+                        <p class="stat-value">${{ "%.2f"|format(users|sum(attribute='balance')) }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-section">
+                <h2>Recent Users</h2>
+                <div class="user-list">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Balance</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>${{ "%.2f"|format(user.balance) }}</td>
+                                <td class="actions">
+                                    <button class="btn-edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
