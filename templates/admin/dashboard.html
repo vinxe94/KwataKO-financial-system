@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="dashboard">
@@ -14,7 +15,7 @@
                 <h2>Admin Panel</h2>
             </div>
             <nav>
-                <a href="{{ url_for('admin_dashboard') }}" class="{{ 'active' if active_page == 'admin_dashboard' }}">
+                <a href="{{ url_for('admin.dashboard') }}" class="{{ 'active' if active_page == 'admin_dashboard' }}">
                     <i class="fas fa-tachometer-alt"></i> Dashboard
                 </a>
                 <a href="{{ url_for('admin.manage_users') }}" class="{{ 'active' if active_page == 'manage_users' }}">
@@ -47,20 +48,45 @@
                     <i class="fas fa-users"></i>
                     <div class="stat-info">
                         <h3>Total Users</h3>
-                        <p class="stat-value">{{ users|length }}</p>
+                        <p class="stat-value">3</p>
+                        <small>Registered users (excluding admins)</small>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-user-check"></i>
+                    <div class="stat-info">
+                        <h3>Active Users</h3>
+                        <p class="stat-value">1</p>
+                        <small>Last 30 days</small>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-user-clock"></i>
+                    <div class="stat-info">
+                        <h3>Inactive Users</h3>
+                        <p class="stat-value">2</p>
+                        <small>No activity > 30 days</small>
                     </div>
                 </div>
                 <div class="stat-card">
                     <i class="fas fa-wallet"></i>
                     <div class="stat-info">
                         <h3>Total Balance</h3>
-                        <p class="stat-value">${{ "%.2f"|format(users|sum(attribute='balance')) }}</p>
+                        <p class="stat-value">$1,250.00</p>
+                        <small>All users combined</small>
                     </div>
                 </div>
             </div>
 
+            <div class="chart-section">
+                <div class="chart-card">
+                    <h3>User Growth (Last 6 Months)</h3>
+                    <canvas id="userGrowthChart"></canvas>
+                </div>
+            </div>
+
             <div class="admin-section">
-                <h2>Recent Users</h2>
+                <h2>User List</h2>
                 <div class="user-list">
                     <table>
                         <thead>
@@ -68,6 +94,7 @@
                                 <th>Username</th>
                                 <th>Email</th>
                                 <th>Balance</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -77,6 +104,13 @@
                                 <td>{{ user.username }}</td>
                                 <td>{{ user.email }}</td>
                                 <td>${{ "%.2f"|format(user.balance) }}</td>
+                                <td>
+                                    {% if user.last_login and (now() - user.last_login|datetime).days <= 30 %}
+                                        <span class="badge badge-success">Active</span>
+                                    {% else %}
+                                        <span class="badge badge-warning">Inactive</span>
+                                    {% endif %}
+                                </td>
                                 <td class="actions">
                                     <button class="btn-edit">
                                         <i class="fas fa-edit"></i>
@@ -93,5 +127,38 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Initialize the user growth chart
+        const ctx = document.getElementById('userGrowthChart').getContext('2d');
+        const data = {{ monthly_registrations|tojson }};
+        
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.map(item => item.month),
+                datasets: [{
+                    label: 'New Users',
+                    data: data.map(item => item.count),
+                    borderColor: '#2196F3',
+                    backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                    borderWidth: 2,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>

@@ -3,18 +3,26 @@ from datetime import timedelta
 
 
 class Config:
-    # Base directory
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    # Get the base directory of the application
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
     
-    # Database
-    SQLITE_DB = os.path.join(BASE_DIR, 'financial.db')
-    DATABASE_PATH = os.path.join(BASE_DIR, 'financial.db')
+    # Database configuration
+    DATABASE_PATH = os.path.join(BASE_DIR, 'instance', 'financial.db')
     
-    # Security
-    SECRET_KEY = 'dev-key-12345'  # Change this in production
+    # Flask configuration
+    SECRET_KEY = 'your-secret-key-here'  # Change this in production
+    
+    # Session configuration
+    PERMANENT_SESSION_LIFETIME = 3600  # 1 hour
+    SESSION_COOKIE_SECURE = False  # Set to True in production
     SESSION_COOKIE_HTTPONLY = True
-    SESSION_COOKIE_SECURE = False  # Allow HTTP in development
-    PERMANENT_SESSION_LIFETIME = timedelta(days=1)
+    
+    # Security configuration
+    PASSWORD_MIN_LENGTH = 8
+    PASSWORD_REQUIRE_UPPER = True
+    PASSWORD_REQUIRE_LOWER = True
+    PASSWORD_REQUIRE_DIGIT = True
+    PASSWORD_REQUIRE_SPECIAL = True
     
     # Application settings
     DEBUG = False

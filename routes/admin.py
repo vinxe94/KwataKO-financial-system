@@ -6,6 +6,7 @@ import sqlite3
 from config import Config
 import logging
 import os
+from datetime import datetime
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -38,11 +39,20 @@ def dashboard():
     try:
         with get_db_connection() as conn:
             cur = conn.cursor()
+            
+            # Get total number of regular users with debug logging
+            cur.execute("SELECT COUNT(*) as total FROM users WHERE is_admin = 0")
+            result = cur.fetchone()
+            total_users = result['total'] if result else 0
+            current_app.logger.info(f"Total non-admin users found: {total_users}")
+            
+            # Get users with their balances and last login
             cur.execute("""
                 SELECT u.*, 
                        COALESCE(SUM(CASE WHEN t.type = 'income' THEN t.amount 
                                         WHEN t.type = 'expense' THEN -t.amount 
-                                        ELSE 0 END), 0) as balance
+                                        ELSE 0 END), 0) as balance,
+                       MAX(u.last_login) as last_login
                 FROM users u
                 LEFT JOIN transactions t ON u.id = t.user_id
                 WHERE u.is_admin = 0
@@ -50,16 +60,46 @@ def dashboard():
                 ORDER BY u.username
             """)
             users = [dict(row) for row in cur.fetchall()]
+            current_app.logger.info(f"Number of users fetched with details: {len(users)}")
             
-        return render_template('admin/dashboard.html',
-                             active_page='admin_dashboard',
-                             users=users)
+            # Count active users (logged in within last 30 days)
+            active_users = sum(1 for user in users if user['last_login'] and 
+                             (datetime.now() - datetime.strptime(user['last_login'], '%Y-%m-%d %H:%M:%S')).days <= 30)
+            current_app.logger.info(f"Active users in last 30 days: {active_users}")
+            
+            # Get monthly user registrations for the last 6 months
+            cur.execute("""
+                SELECT strftime('%Y-%m', created_at) as month, COUNT(*) as count
+                FROM users
+                WHERE is_admin = 0
+                AND created_at >= date('now', '-6 months')
+                GROUP BY strftime('%Y-%m', created_at)
+                ORDER BY month DESC
+                LIMIT 6
+            """)
+            monthly_registrations = [dict(row) for row in cur.fetchall()]
+            
+            # Calculate total system balance
+            total_balance = sum(user['balance'] for user in users)
+            current_app.logger.info(f"Total system balance: {total_balance}")
+            
+            # Debug print all variables being passed to template
+            current_app.logger.info(f"Template variables - total_users: {total_users}, active_users: {active_users}, users_count: {len(users)}")
+            
+            return render_template('admin/dashboard.html',
+                                 active_page='admin_dashboard',
+                                 total_users=total_users,
+                                 users=users,
+                                 active_users=active_users,
+                                 total_balance=total_balance,
+                                 monthly_registrations=monthly_registrations,
+                                 now=datetime.now)
     except Exception as e:
         current_app.logger.error(f'Admin dashboard error: {str(e)}')
         flash('Error loading admin dashboard', 'error')
         return redirect(url_for('login'))
 
-@admin_bp.route('/manage_users')
+@admin_bp.route('/manage-users')
 @admin_required
 def manage_users():
     try:
@@ -69,7 +109,8 @@ def manage_users():
                 SELECT u.*, 
                        COALESCE(SUM(CASE WHEN t.type = 'income' THEN t.amount 
                                         WHEN t.type = 'expense' THEN -t.amount 
-                                        ELSE 0 END), 0) as balance
+                                        ELSE 0 END), 0) as balance,
+                       MAX(u.last_login) as last_login
                 FROM users u
                 LEFT JOIN transactions t ON u.id = t.user_id
                 WHERE u.is_admin = 0
@@ -78,9 +119,9 @@ def manage_users():
             """)
             users = [dict(row) for row in cur.fetchall()]
             
-        return render_template('admin/manage_users.html',
-                             active_page='manage_users',
-                             users=users)
+            return render_template('admin/manage_users.html',
+                                 active_page='manage_users',
+                                 users=users)
     except Exception as e:
         current_app.logger.error(f'Error managing users: {str(e)}')
         flash('Error loading user management page', 'error')

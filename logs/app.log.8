@@ -1,21 +1,28 @@
-2025-05-21 08:45:44,332 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
-2025-05-21 08:45:44,343 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:272]
-2025-05-21 08:48:04,791 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
-2025-05-21 08:48:04,792 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:272]
-2025-05-21 08:55:17,665 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
-2025-05-21 08:55:17,666 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:280]
-2025-05-21 08:55:49,584 INFO: Generated 5 insights for user 2 [in C:\Users\Administrator\Desktop\financial\app.py:516]
-2025-05-21 08:57:47,404 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
-2025-05-21 08:57:47,406 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:280]
-2025-05-21 09:00:56,899 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
-2025-05-21 09:00:56,900 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:280]
-2025-05-21 09:04:56,521 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
-2025-05-21 09:04:56,522 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:280]
-2025-05-21 09:10:22,319 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
-2025-05-21 09:10:22,320 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:280]
-2025-05-21 09:14:29,851 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
-2025-05-21 09:14:29,852 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:280]
-2025-05-21 09:14:36,154 ERROR: Exception on /budgets [GET] [in C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py:875]
+2025-05-25 15:49:51,045 INFO: Generated 8 insights for user 2 [in C:\Users\Administrator\Desktop\financial\app.py:562]
+2025-05-25 15:54:18,616 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-25 15:54:18,618 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:328]
+2025-05-25 15:57:44,494 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-25 15:57:44,495 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:328]
+2025-05-25 16:03:59,525 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-25 16:03:59,526 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:328]
+2025-05-25 16:10:32,785 INFO: Generated 9 insights for user 2 [in C:\Users\Administrator\Desktop\financial\app.py:562]
+2025-05-25 16:18:29,114 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-25 16:18:29,116 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:328]
+2025-05-25 16:29:27,532 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-25 16:29:27,533 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:328]
+2025-05-25 16:30:36,713 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-25 16:30:36,714 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:328]
+2025-05-25 16:38:20,502 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-25 16:38:20,503 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:328]
+2025-05-25 16:38:46,370 INFO: Generated 8 insights for user 2 [in C:\Users\Administrator\Desktop\financial\app.py:562]
+2025-05-25 16:51:01,948 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-25 16:51:01,949 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:338]
+2025-05-25 16:53:05,838 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-25 16:53:05,839 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:328]
+2025-05-25 16:53:20,455 INFO: User Jeody logged in successfully [in C:\Users\Administrator\Desktop\financial\app.py:363]
+2025-05-25 17:03:46,629 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-25 17:03:46,630 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:472]
+2025-05-25 17:04:36,872 ERROR: Exception on /admin/login [POST] [in C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py:875]
 Traceback (most recent call last):
   File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
@@ -26,103 +33,47 @@ Traceback (most recent call last):
   File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\financial\app.py", line 398, in budgets
-    return render_template('budgets.html',
-                         active_page='budgets',
-                         budgets=budgets,
-                         categories=categories)
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
-    return _render(app, template, context)
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 131, in _render
-    rv = template.render(context)
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
-    self.environment.handle_exception()
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "C:\Users\Administrator\Desktop\financial\templates\budgets.html", line 1, in top-level template code
-    {% extends "layout.html" %}
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\financial\templates\layout.html", line 55, in top-level template code
-    {% block content %}{% endblock %}
-    ^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\financial\templates\budgets.html", line 20, in block 'content'
-    {% for label in budget.labels.split(',') if label %}
-    ^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
-    return getattr(obj, attribute)
-jinja2.exceptions.UndefinedError: 'dict object' has no attribute 'labels'
-2025-05-21 09:14:51,326 ERROR: Exception on /budgets [GET] [in C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py:875]
-Traceback (most recent call last):
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
-    response = self.full_dispatch_request()
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\financial\app.py", line 398, in budgets
-    return render_template('budgets.html',
-                         active_page='budgets',
-                         budgets=budgets,
-                         categories=categories)
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
-    return _render(app, template, context)
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 131, in _render
-    rv = template.render(context)
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
-    self.environment.handle_exception()
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "C:\Users\Administrator\Desktop\financial\templates\budgets.html", line 1, in top-level template code
-    {% extends "layout.html" %}
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\financial\templates\layout.html", line 55, in top-level template code
-    {% block content %}{% endblock %}
-    ^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\financial\templates\budgets.html", line 20, in block 'content'
-    <div class="bar" style="width: {{ budget.progress }}%"></div>
-    ^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
-    return getattr(obj, attribute)
-jinja2.exceptions.UndefinedError: 'dict object' has no attribute 'labels'
-2025-05-21 09:14:52,528 ERROR: Exception on /budgets [GET] [in C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py:875]
-Traceback (most recent call last):
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
-    response = self.full_dispatch_request()
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\financial\app.py", line 398, in budgets
-    return render_template('budgets.html',
-                         active_page='budgets',
-                         budgets=budgets,
-                         categories=categories)
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
-    return _render(app, template, context)
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\flask\templating.py", line 131, in _render
-    rv = template.render(context)
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
-    self.environment.handle_exception()
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "C:\Users\Administrator\Desktop\financial\templates\budgets.html", line 1, in top-level template code
-    {% extends "layout.html" %}
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\financial\templates\layout.html", line 55, in top-level template code
-    {% block content %}{% endblock %}
-    ^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\financial\templates\budgets.html", line 20, in block 'content'
-    <div class="bar" style="width: {{ budget.progress }}%"></div>
-    ^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\financial\venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
-    return getattr(obj, attribute)
-jinja2.exceptions.UndefinedError: 'dict object' has no attribute 'labels'
+  File "C:\Users\Administrator\Desktop\financial\app.py", line 61, in admin_login
+    if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+                   ^^^^^^^^^^^^^^
+NameError: name 'ADMIN_USERNAME' is not defined
+2025-05-25 17:05:10,255 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-25 17:05:10,264 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:328]
+2025-05-25 17:16:06,608 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-25 17:16:06,609 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:338]
+2025-05-25 17:16:30,543 WARNING: Failed login attempt for username: admin [in C:\Users\Administrator\Desktop\financial\app.py:385]
+2025-05-25 17:16:36,879 WARNING: Failed login attempt for username: Jeody [in C:\Users\Administrator\Desktop\financial\app.py:385]
+2025-05-25 17:16:48,431 WARNING: Failed login attempt for username: Jeody [in C:\Users\Administrator\Desktop\financial\app.py:385]
+2025-05-25 17:18:41,353 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:26]
+2025-05-25 17:18:41,412 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:328]
+2025-05-25 17:21:32,529 WARNING: Failed login attempt for username: Jeody [in C:\Users\Administrator\Desktop\financial\app.py:366]
+2025-05-25 17:21:41,819 INFO: User Jeody logged in successfully [in C:\Users\Administrator\Desktop\financial\app.py:363]
+2025-05-25 17:25:25,020 INFO: User admin logged in successfully [in C:\Users\Administrator\Desktop\financial\app.py:363]
+2025-05-25 17:25:53,717 INFO: Generated 4 insights for user 1 [in C:\Users\Administrator\Desktop\financial\app.py:562]
+2025-05-25 17:26:20,104 INFO: User Jeody logged in successfully [in C:\Users\Administrator\Desktop\financial\app.py:363]
+2025-05-25 17:26:30,541 INFO: Generated 8 insights for user 2 [in C:\Users\Administrator\Desktop\financial\app.py:562]
+2025-05-25 17:34:55,738 INFO: User admin logged in successfully [in C:\Users\Administrator\Desktop\financial\app.py:363]
+2025-05-25 17:35:05,839 INFO: Generated 4 insights for user 1 [in C:\Users\Administrator\Desktop\financial\app.py:562]
+2025-05-25 17:35:49,621 INFO: User admin logged in successfully [in C:\Users\Administrator\Desktop\financial\app.py:363]
+2025-05-25 17:41:04,422 WARNING: Failed login attempt for username: admin [in C:\Users\Administrator\Desktop\financial\app.py:366]
+2025-05-25 17:41:16,521 INFO: User admin logged in successfully [in C:\Users\Administrator\Desktop\financial\app.py:363]
+2025-05-25 17:47:59,588 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:28]
+2025-05-25 17:47:59,589 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:353]
+2025-05-25 17:48:15,148 INFO: User admin logged in successfully as user [in C:\Users\Administrator\Desktop\financial\app.py:392]
+2025-05-25 17:48:25,026 INFO: Generated 4 insights for user 1 [in C:\Users\Administrator\Desktop\financial\app.py:622]
+2025-05-25 17:52:37,146 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:27]
+2025-05-25 17:52:37,148 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:340]
+2025-05-25 17:52:57,196 INFO: User admin logged in successfully as user [in C:\Users\Administrator\Desktop\financial\app.py:379]
+2025-05-25 17:57:06,452 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:27]
+2025-05-25 17:57:06,454 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:340]
+2025-05-25 17:58:26,705 INFO: User admin logged in successfully as user [in C:\Users\Administrator\Desktop\financial\app.py:379]
+2025-05-25 18:01:34,851 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:27]
+2025-05-25 18:01:34,852 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:340]
+2025-05-25 18:02:20,727 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:27]
+2025-05-25 18:02:20,728 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial\app.py:340]
+2025-05-25 22:05:24,323 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:27]
+2025-05-25 22:05:24,324 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:340]
+2025-05-25 22:05:55,804 INFO: User Jeody logged in successfully as user [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:379]
+2025-05-25 22:06:04,672 INFO: Generated 8 insights for user 2 [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:609]
+2025-05-25 22:15:27,483 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:27]
+2025-05-25 22:15:27,484 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:340]

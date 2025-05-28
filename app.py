@@ -403,7 +403,7 @@ def login():
                 app.logger.info(f'User {user.username} logged in successfully as {login_type}')
                 
                 if user.is_admin and login_type == 'admin':
-                    return redirect(url_for('admin_dashboard'))
+                    return redirect(url_for('admin.dashboard'))
                 return redirect(url_for('overview'))
             else:
                 app.logger.warning(f'Failed login attempt for username: {username}')
@@ -417,30 +417,8 @@ def login():
 @app.route('/admin/dashboard')
 @admin_required
 def admin_dashboard():
-    try:
-        # Get all users and their balances
-        with repo.get_connection() as conn:
-            cur = conn.cursor()
-            cur.execute("""
-                SELECT u.id, u.username, u.email, 
-                       COALESCE(SUM(CASE WHEN t.type = 'income' THEN t.amount 
-                                        WHEN t.type = 'expense' THEN -t.amount 
-                                        ELSE 0 END), 0) as balance
-                FROM users u
-                LEFT JOIN transactions t ON u.id = t.user_id
-                WHERE u.is_admin = 0
-                GROUP BY u.id, u.username, u.email
-                ORDER BY u.username
-            """)
-            users = [dict(row) for row in cur.fetchall()]
-            
-        return render_template('admin/dashboard.html',
-                             active_page='admin_dashboard',
-                             users=users)
-    except Exception as e:
-        app.logger.error(f'Admin dashboard error: {str(e)}')
-        flash('Error loading admin dashboard', 'error')
-        return redirect(url_for('login'))
+    # This route is now handled in routes/admin.py
+    return redirect(url_for('admin.dashboard'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -1115,13 +1093,13 @@ def change_admin_credentials():
                 track_login_attempt(user.username, True)
                 
                 flash('Admin credentials updated successfully', 'success')
-                return redirect(url_for('admin_dashboard'))
+                return redirect(url_for('admin.dashboard'))
         
         return render_template('admin/change_credentials.html', active_page='change_credentials')
     except Exception as e:
         app.logger.error(f'Error changing admin credentials: {str(e)}')
         flash('Error updating credentials', 'error')
-        return redirect(url_for('admin_dashboard'))
+        return redirect(url_for('admin.dashboard'))
 
 # Ensure proper shutdown handling
 def shutdown_server():
