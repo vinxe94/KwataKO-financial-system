@@ -1,25 +1,36 @@
-2025-05-27 10:44:58,156 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:27]
-2025-05-27 10:44:58,167 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:343]
-2025-05-27 10:46:31,479 WARNING: Failed login attempt for username: vincey [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:388]
-2025-05-27 10:49:21,170 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:27]
-2025-05-27 10:49:21,172 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:343]
-2025-05-27 10:51:20,069 WARNING: Failed login attempt for username: sssss [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:388]
-2025-05-27 10:57:29,331 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:28]
-2025-05-27 10:57:29,332 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:344]
-2025-05-27 10:58:16,540 WARNING: Failed login attempt for username: sss [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:389]
-2025-05-27 10:59:53,356 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:28]
-2025-05-27 10:59:53,357 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:344]
-2025-05-27 11:00:25,077 WARNING: Failed login attempt for username: vincey [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:389]
-2025-05-27 11:00:37,134 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:28]
-2025-05-27 11:00:37,135 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:344]
-2025-05-27 11:02:01,844 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:28]
-2025-05-27 11:02:01,845 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:344]
-2025-05-27 11:02:22,899 WARNING: Failed login attempt for username: dd [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:389]
-2025-05-27 11:04:31,246 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:28]
-2025-05-27 11:04:31,247 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:344]
-2025-05-27 11:07:02,523 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:28]
-2025-05-27 11:07:02,524 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:344]
-2025-05-27 11:08:05,944 ERROR: Exception on /admin/change_credentials [POST] [in C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py:875]
+2025-05-27 11:22:13,946 ERROR: Exception on /admin/dashboard [GET] [in C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\routes\admin.py", line 43, in dashboard
+    return render_template('admin/dashboard.html',
+                         active_page='admin_dashboard',
+                         users=users)
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\templates\admin\dashboard.html", line 20, in top-level template code
+    <a href="{{ url_for('admin.manage_users') }}" class="{{ 'active' if active_page == 'manage_users' }}">
+    ^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py", line 1121, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py", line 1110, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+        endpoint,
+    ...<3 lines>...
+        force_external=_external,
+    )
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\werkzeug\routing\map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'admin.manage_users'. Did you mean 'admin.add_user' instead?
+
+During handling of the above exception, another exception occurred:
+
 Traceback (most recent call last):
   File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
@@ -30,16 +41,48 @@ Traceback (most recent call last):
   File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\financial - Copy (2)\routes\admin.py", line 34, in change_credentials
-    with repo.get_connection() as conn:
-         ^^^^
-NameError: name 'repo' is not defined. Did you mean: 'repr'?
-2025-05-27 11:10:31,820 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:28]
-2025-05-27 11:10:31,821 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:344]
-2025-05-27 11:13:18,456 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:28]
-2025-05-27 11:13:18,459 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:344]
-2025-05-27 11:15:20,587 INFO: User VINCE logged in successfully as admin [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:383]
-2025-05-27 11:15:24,017 ERROR: Exception on /admin/users [GET] [in C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py:875]
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\routes\admin.py", line 21, in decorated_function
+    return f(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\routes\admin.py", line 47, in dashboard
+    app.logger.error(f'Admin dashboard error: {str(e)}')
+    ^^^
+NameError: name 'app' is not defined
+2025-05-27 11:25:17,927 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:29]
+2025-05-27 11:25:17,928 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:364]
+2025-05-27 11:25:49,105 INFO: User VINCE logged in successfully as admin [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:403]
+2025-05-27 11:25:49,164 ERROR: Exception on /admin/dashboard [GET] [in C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\routes\admin.py", line 48, in dashboard
+    return render_template('admin/dashboard.html',
+                         active_page='admin_dashboard',
+                         users=users)
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\templates\admin\dashboard.html", line 20, in top-level template code
+    <a href="{{ url_for('admin.manage_users') }}" class="{{ 'active' if active_page == 'manage_users' }}">
+    ^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py", line 1121, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py", line 1110, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+        endpoint,
+    ...<3 lines>...
+        force_external=_external,
+    )
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\werkzeug\routing\map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'admin.manage_users'. Did you mean 'admin.add_user' instead?
+
+During handling of the above exception, another exception occurred:
+
 Traceback (most recent call last):
   File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
@@ -50,52 +93,12 @@ Traceback (most recent call last):
   File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask_login\utils.py", line 284, in decorated_view
-    elif not current_user.is_authenticated:
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\werkzeug\local.py", line 318, in __get__
-    obj = instance._get_current_object()
-  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\werkzeug\local.py", line 526, in _get_current_object
-    return get_name(local())
-                    ~~~~~^^
-  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask_login\utils.py", line 25, in <lambda>
-    current_user = LocalProxy(lambda: _get_user())
-                                      ~~~~~~~~~^^
-  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask_login\utils.py", line 370, in _get_user
-    current_app.login_manager._load_user()
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'Flask' object has no attribute 'login_manager'
-2025-05-27 11:17:27,410 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:29]
-2025-05-27 11:17:27,412 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:364]
-2025-05-27 11:19:29,381 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:28]
-2025-05-27 11:19:29,382 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:344]
-2025-05-27 11:20:03,453 INFO: User VINCE logged in successfully as admin [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:383]
-2025-05-27 11:20:03,464 ERROR: Exception on /admin/dashboard [GET] [in C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py:875]
-Traceback (most recent call last):
-  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
-    response = self.full_dispatch_request()
-  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask_login\utils.py", line 284, in decorated_view
-    elif not current_user.is_authenticated:
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\werkzeug\local.py", line 318, in __get__
-    obj = instance._get_current_object()
-  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\werkzeug\local.py", line 526, in _get_current_object
-    return get_name(local())
-                    ~~~~~^^
-  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask_login\utils.py", line 25, in <lambda>
-    current_user = LocalProxy(lambda: _get_user())
-                                      ~~~~~~~~~^^
-  File "C:\Users\Administrator\Desktop\financial - Copy (2)\venv\Lib\site-packages\flask_login\utils.py", line 370, in _get_user
-    current_app.login_manager._load_user()
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'Flask' object has no attribute 'login_manager'
-2025-05-27 11:21:46,627 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:29]
-2025-05-27 11:21:46,627 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:364]
-2025-05-27 11:22:13,863 INFO: User VINCE logged in successfully as admin [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:403]
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\routes\admin.py", line 26, in decorated_function
+    return f(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\financial - Copy (2)\routes\admin.py", line 52, in dashboard
+    app.logger.error(f'Admin dashboard error: {str(e)}')
+    ^^^
+NameError: name 'app' is not defined
+2025-05-27 11:27:45,244 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:29]
+2025-05-27 11:27:45,245 INFO: Financial application startup [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:364]
+2025-05-27 11:28:13,152 INFO: User VINCE logged in successfully as admin [in C:\Users\Administrator\Desktop\financial - Copy (2)\app.py:403]

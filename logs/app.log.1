@@ -1,83 +1,4 @@
-2025-05-28 15:37:58,229 ERROR: Admin dashboard error: must be real number, not NoneType [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:114]
-2025-05-28 15:41:43,802 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:29]
-2025-05-28 15:41:43,803 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:364]
-2025-05-28 15:41:58,095 INFO: User admin logged in successfully as admin [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:403]
-2025-05-28 15:41:58,178 ERROR: Admin dashboard error: Could not build url for endpoint 'auth.logout'. Did you mean 'logout' instead? [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:135]
-2025-05-28 15:41:58,180 ERROR: Exception on /admin/dashboard [GET] [in C:\Users\Administrator\Desktop\haha\venv\Lib\site-packages\flask\app.py:1414]
-Traceback (most recent call last):
-  File "C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py", line 124, in dashboard
-    return render_template('admin/dashboard.html',
-                        active_page='admin_dashboard',
-                        stats=stats,
-                        users=users,
-                        monthly_data=monthly_data)
-  File "C:\Users\Administrator\Desktop\haha\venv\Lib\site-packages\flask\templating.py", line 151, in render_template
-    return _render(app, template, context)
-  File "C:\Users\Administrator\Desktop\haha\venv\Lib\site-packages\flask\templating.py", line 132, in _render
-    rv = template.render(context)
-  File "C:\Users\Administrator\Desktop\haha\venv\Lib\site-packages\jinja2\environment.py", line 1301, in render
-    self.environment.handle_exception()
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\Administrator\Desktop\haha\venv\Lib\site-packages\jinja2\environment.py", line 936, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\templates\admin\dashboard.html", line 39, in top-level template code
-    <a href="{{ url_for('auth.logout') }}" class="nav-link">
-    ^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\haha\venv\Lib\site-packages\flask\app.py", line 1697, in url_for
-    return self.handle_url_build_error(error, endpoint, values)
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\haha\venv\Lib\site-packages\flask\app.py", line 1686, in url_for
-    rv = url_adapter.build(  # type: ignore[union-attr]
-        endpoint,
-    ...<3 lines>...
-        force_external=_external,
-    )
-  File "C:\Users\Administrator\Desktop\haha\venv\Lib\site-packages\werkzeug\routing\map.py", line 950, in build
-    raise BuildError(endpoint, values, method, self)
-werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'auth.logout'. Did you mean 'logout' instead?
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\Administrator\Desktop\haha\venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
-    response = self.full_dispatch_request()
-  File "C:\Users\Administrator\Desktop\haha\venv\Lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "C:\Users\Administrator\Desktop\haha\venv\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "C:\Users\Administrator\Desktop\haha\venv\Lib\site-packages\flask\app.py", line 1469, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py", line 37, in decorated_function
-    return f(*args, **kwargs)
-  File "C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py", line 137, in dashboard
-    return redirect(url_for('auth.login'))
-                    ~~~~~~~^^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\haha\venv\Lib\site-packages\flask\helpers.py", line 225, in url_for
-    return current_app.url_for(
-           ~~~~~~~~~~~~~~~~~~~^
-        endpoint,
-        ^^^^^^^^^
-    ...<4 lines>...
-        **values,
-        ^^^^^^^^^
-    )
-    ^
-  File "C:\Users\Administrator\Desktop\haha\venv\Lib\site-packages\flask\app.py", line 1697, in url_for
-    return self.handle_url_build_error(error, endpoint, values)
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Administrator\Desktop\haha\venv\Lib\site-packages\flask\app.py", line 1686, in url_for
-    rv = url_adapter.build(  # type: ignore[union-attr]
-        endpoint,
-    ...<3 lines>...
-        force_external=_external,
-    )
-  File "C:\Users\Administrator\Desktop\haha\venv\Lib\site-packages\werkzeug\routing\map.py", line 950, in build
-    raise BuildError(endpoint, values, method, self)
-werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'auth.login'. Did you mean 'login' instead?
-2025-05-28 15:52:02,808 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:29]
-2025-05-28 15:52:02,809 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:347]
-2025-05-28 15:52:10,473 ERROR: Exception on /login [GET] [in C:\Users\Administrator\Desktop\haha\venv\Lib\site-packages\flask\app.py:1414]
+2025-05-28 16:06:48,518 ERROR: Exception on /login [GET] [in C:\Users\Administrator\Desktop\haha\venv\Lib\site-packages\flask\app.py:1414]
 Traceback (most recent call last):
   File "C:\Users\Administrator\Desktop\haha\venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
     response = self.full_dispatch_request()
@@ -109,7 +30,54 @@ Traceback (most recent call last):
   File "C:\Users\Administrator\Desktop\haha\venv\Lib\site-packages\flask\templating.py", line 98, in _get_source_fast
     raise TemplateNotFound(template)
 jinja2.exceptions.TemplateNotFound: auth/login.html
-2025-05-28 15:52:46,326 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:29]
-2025-05-28 15:52:46,327 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:347]
-2025-05-28 16:05:11,403 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:29]
-2025-05-28 16:05:11,405 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:347]
+2025-05-28 16:07:23,343 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:29]
+2025-05-28 16:07:23,345 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:364]
+2025-05-28 16:07:45,233 INFO: User admin logged in successfully as admin [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:403]
+2025-05-28 16:11:41,983 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:29]
+2025-05-28 16:11:41,985 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:364]
+2025-05-28 16:11:57,240 INFO: User admin logged in successfully as admin [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:403]
+2025-05-28 16:16:01,982 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:29]
+2025-05-28 16:16:01,983 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:364]
+2025-05-28 16:16:18,372 INFO: User admin logged in successfully as admin [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:403]
+2025-05-28 16:27:15,186 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:29]
+2025-05-28 16:27:15,192 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:364]
+2025-05-28 16:27:40,146 INFO: User admin logged in successfully as admin [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:403]
+2025-05-28 16:27:40,166 INFO: Total non-admin users found: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:47]
+2025-05-28 16:27:40,168 INFO: Number of users fetched with details: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:63]
+2025-05-28 16:27:40,169 INFO: Active users in last 30 days: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:68]
+2025-05-28 16:27:40,171 INFO: Total system balance: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:84]
+2025-05-28 16:27:40,171 INFO: Template variables - total_users: 0, active_users: 0, users_count: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:87]
+2025-05-28 16:29:18,692 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:29]
+2025-05-28 16:29:18,694 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:364]
+2025-05-28 16:29:34,728 INFO: User admin logged in successfully as admin [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:403]
+2025-05-28 16:29:34,745 INFO: Total non-admin users found: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:47]
+2025-05-28 16:29:34,746 INFO: Number of users fetched with details: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:63]
+2025-05-28 16:29:34,747 INFO: Active users in last 30 days: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:68]
+2025-05-28 16:29:34,748 INFO: Total system balance: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:84]
+2025-05-28 16:29:34,748 INFO: Template variables - total_users: 0, active_users: 0, users_count: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:87]
+2025-05-28 16:33:22,919 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:29]
+2025-05-28 16:33:22,920 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:364]
+2025-05-28 16:33:45,223 INFO: User admin logged in successfully as admin [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:403]
+2025-05-28 16:33:45,237 INFO: Total non-admin users found: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:47]
+2025-05-28 16:33:45,241 INFO: Number of users fetched with details: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:63]
+2025-05-28 16:33:45,245 INFO: Active users in last 30 days: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:68]
+2025-05-28 16:33:45,246 INFO: Total system balance: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:84]
+2025-05-28 16:33:45,247 INFO: Template variables - total_users: 0, active_users: 0, users_count: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:87]
+2025-05-28 16:34:01,955 INFO: Total non-admin users found: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:47]
+2025-05-28 16:34:01,959 INFO: Number of users fetched with details: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:63]
+2025-05-28 16:34:01,960 INFO: Active users in last 30 days: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:68]
+2025-05-28 16:34:01,961 INFO: Total system balance: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:84]
+2025-05-28 16:34:01,962 INFO: Template variables - total_users: 0, active_users: 0, users_count: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:87]
+2025-05-28 16:36:05,352 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:29]
+2025-05-28 16:36:05,355 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:364]
+2025-05-28 16:37:04,964 INFO: User admin logged in successfully as admin [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:403]
+2025-05-28 16:37:04,977 INFO: Total non-admin users found: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:47]
+2025-05-28 16:37:04,979 INFO: Number of users fetched with details: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:63]
+2025-05-28 16:37:04,980 INFO: Active users in last 30 days: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:68]
+2025-05-28 16:37:04,982 INFO: Total system balance: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:84]
+2025-05-28 16:37:04,982 INFO: Template variables - total_users: 0, active_users: 0, users_count: 0 [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\routes\admin.py:87]
+2025-05-28 16:43:02,263 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:29]
+2025-05-28 16:43:02,265 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:364]
+2025-05-28 16:47:20,037 WARNING: Failed login attempt for username: Jeody [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:409]
+2025-05-28 16:47:33,061 WARNING: Failed login attempt for username: Jeody [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:409]
+2025-05-28 16:47:49,075 INFO: Financial application startup [in C:\Users\Administrator\Desktop\haha\KwataKO-financial-system\app.py:29]

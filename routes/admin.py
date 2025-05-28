@@ -40,7 +40,7 @@ def dashboard():
         with get_db_connection() as conn:
             cur = conn.cursor()
             
-            # Get total number of regular users with debug logging
+            # Get total number of regular users
             cur.execute("SELECT COUNT(*) as total FROM users WHERE is_admin = 0")
             result = cur.fetchone()
             total_users = result['total'] if result else 0
@@ -62,6 +62,17 @@ def dashboard():
             users = [dict(row) for row in cur.fetchall()]
             current_app.logger.info(f"Number of users fetched with details: {len(users)}")
             
+            # Calculate balance statistics
+            balances = [user['balance'] for user in users]
+            total_balance = sum(balances)
+            highest_balance = max(balances) if balances else 0
+            lowest_balance = min(balances) if balances else 0
+            average_balance = total_balance / len(users) if users else 0
+            
+            # Get users with highest and lowest balances
+            highest_balance_user = next((user['username'] for user in users if user['balance'] == highest_balance), 'N/A')
+            lowest_balance_user = next((user['username'] for user in users if user['balance'] == lowest_balance), 'N/A')
+            
             # Count active users (logged in within last 30 days)
             active_users = sum(1 for user in users if user['last_login'] and 
                              (datetime.now() - datetime.strptime(user['last_login'], '%Y-%m-%d %H:%M:%S')).days <= 30)
@@ -79,19 +90,17 @@ def dashboard():
             """)
             monthly_registrations = [dict(row) for row in cur.fetchall()]
             
-            # Calculate total system balance
-            total_balance = sum(user['balance'] for user in users)
-            current_app.logger.info(f"Total system balance: {total_balance}")
-            
-            # Debug print all variables being passed to template
-            current_app.logger.info(f"Template variables - total_users: {total_users}, active_users: {active_users}, users_count: {len(users)}")
-            
             return render_template('admin/dashboard.html',
                                  active_page='admin_dashboard',
                                  total_users=total_users,
                                  users=users,
                                  active_users=active_users,
                                  total_balance=total_balance,
+                                 highest_balance=highest_balance,
+                                 lowest_balance=lowest_balance,
+                                 average_balance=average_balance,
+                                 highest_balance_user=highest_balance_user,
+                                 lowest_balance_user=lowest_balance_user,
                                  monthly_registrations=monthly_registrations,
                                  now=datetime.now)
     except Exception as e:
